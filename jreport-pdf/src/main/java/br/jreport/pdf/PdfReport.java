@@ -5,6 +5,7 @@ import java.io.FileNotFoundException;
 
 import com.lowagie.text.Document;
 import com.lowagie.text.DocumentException;
+import com.lowagie.text.Element;
 import com.lowagie.text.pdf.PdfWriter;
 
 import br.jreport.core.api.Detail;
@@ -26,6 +27,8 @@ public class PdfReport implements Report {
 
 	private Title title;
 
+	private Detail detail;
+
 	private ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
 
 	public PdfReport() throws FileNotFoundException, DocumentException {
@@ -33,6 +36,7 @@ public class PdfReport implements Report {
 		this.pdfWriter = PdfWriter.getInstance(document, outputStream);
 		this.document.open();
 		this.title = new PdfReportTitle(this.document, this);
+		this.detail = new PdfReportDetail(document, this);
 	}
 
 	@Override
@@ -42,7 +46,7 @@ public class PdfReport implements Report {
 
 	@Override
 	public Detail detail() {
-		return null;
+		return this.detail;
 	}
 
 	@Override
@@ -54,6 +58,14 @@ public class PdfReport implements Report {
 	public ReportOutputData buildReport() {
 		document.close();
 		return new PdfReportOutputData(outputStream);
+	}
+
+	public static void addToDocument(Document document, Element element) {
+		try {
+			document.add(element);
+		} catch (DocumentException e) {
+			e.printStackTrace();
+		}
 	}
 
 }
