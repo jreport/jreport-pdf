@@ -1,7 +1,6 @@
 package br.jreport.pdf;
 
 import com.lowagie.text.Document;
-import com.lowagie.text.Element;
 
 import br.jreport.core.api.Report;
 import br.jreport.core.api.Title;
@@ -36,11 +35,13 @@ public class PdfRegionTitle implements Title {
 
 	@Override
 	public Title newLine() {
+		PdfNewLine.of(document).ifPresent(newLine -> newLine.build());
 		return this;
 	}
 
 	@Override
 	public Title newPage() {
+		PdfNewPage.of(document).ifPresent(newPage -> newPage.build());
 		return this;
 	}
 
