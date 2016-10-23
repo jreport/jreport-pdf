@@ -75,6 +75,7 @@ public class PdfRegionDetail implements Detail {
 	 */
 	@Override
 	public Detail newLine() {
+		PdfNewLine.of(document).ifPresent(newLine -> newLine.build());
 		return this;
 	}
 
