@@ -46,11 +46,6 @@ public class PontoTransmissaoTableAdapter implements TableAdapter<PontoTransmiss
 	}
 
 	@Override
-	public int numColumns() {
-		return getHeaders().size();
-	}
-
-	@Override
 	public Datasource<PontoTransmissao> getDatasource() {
 		return this.pontoTransmissaoDS;
 	}
