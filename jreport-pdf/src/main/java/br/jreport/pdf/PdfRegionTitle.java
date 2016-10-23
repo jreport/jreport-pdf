@@ -30,6 +30,7 @@ public class PdfRegionTitle implements Title {
 
 	@Override
 	public Title text(String text) {
+		PdfText.of(document, text).ifPresent(txt -> txt.build());
 		return this;
 	}
 
