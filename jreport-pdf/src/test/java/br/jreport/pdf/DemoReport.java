@@ -21,7 +21,6 @@ public class DemoReport implements ClassReport {
 			.title()
 				.text("Relatório de Teste")
 				.text("Abc")
-				.newPage()
 			.buildTitle()
 			.detail()
 				.text("Listagem de Pontos de Transmissão")
