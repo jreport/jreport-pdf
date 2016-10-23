@@ -35,8 +35,8 @@ public class PdfReport implements Report {
 		super();
 		this.pdfWriter = PdfWriter.getInstance(document, outputStream);
 		this.document.open();
-		this.title = new PdfReportTitle(this.document, this);
-		this.detail = new PdfReportDetail(document, this);
+		this.title = new PdfRegionTitle(this.document, this);
+		this.detail = new PdfRegionDetail(this.document, this);
 	}
 
 	@Override

@@ -1,13 +1,12 @@
 package br.jreport.pdf;
 
 import com.lowagie.text.Document;
-import com.lowagie.text.DocumentException;
-import com.lowagie.text.Paragraph;
+import com.lowagie.text.Element;
 
 import br.jreport.core.api.Report;
 import br.jreport.core.api.Title;
 
-public class PdfReportTitle implements Title {
+public class PdfRegionTitle implements Title {
 
 	/**
 	 * 
@@ -18,7 +17,7 @@ public class PdfReportTitle implements Title {
 
 	private Report report;
 
-	public PdfReportTitle(Document document, Report report) {
+	public PdfRegionTitle(Document document, Report report) {
 		super();
 		this.document = document;
 		this.report = report;
@@ -31,22 +30,17 @@ public class PdfReportTitle implements Title {
 
 	@Override
 	public Title text(String text) {
-		try {
-			this.document.add(new Paragraph(text));
-		} catch (DocumentException e) {
-			e.printStackTrace();
-		}
 		return this;
 	}
 
 	@Override
-	public Title line() {
-		return null;
+	public Title newLine() {
+		return this;
 	}
 
 	@Override
-	public Title line(int value) {
-		return null;
+	public Title newPage() {
+		return this;
 	}
 
 	@Override

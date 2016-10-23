@@ -15,7 +15,7 @@ public class PontoTransmissaoDS implements Datasource<PontoTransmissao> {
 	private static final long serialVersionUID = 1L;
 
 	@Override
-	public List<PontoTransmissao> get() {
+	public List<PontoTransmissao> getList() {
 		return Arrays.asList(new PontoTransmissao("1", "A"), new PontoTransmissao("2", "B"), new PontoTransmissao("3", "C"));
 	}
 

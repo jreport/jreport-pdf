@@ -3,30 +3,56 @@ package br.jreport.pdf.adapter;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
+import br.jreport.core.api.TableColumn;
+import br.jreport.core.api.TableHeader;
 import br.jreport.core.api.adapter.TableAdapter;
+import br.jreport.core.api.datasource.Datasource;
+import br.jreport.pdf.datasource.PontoTransmissaoDS;
 import br.jreport.pdf.model.PontoTransmissao;
 
 public class PontoTransmissaoTableAdapter implements TableAdapter<PontoTransmissao> {
-	
+
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
 
+	private PontoTransmissaoDS pontoTransmissaoDS = new PontoTransmissaoDS();
+
+	private List<String> headers = Arrays.asList("Id", "Nome");
+
 	@Override
-	public Optional<String> getColumnValue(PontoTransmissao item, int columnIndex) {
+	public Optional<TableColumn> getColumn(PontoTransmissao item, int columnIndex) {
 		switch (columnIndex) {
 		case 0:
-			return Optional.of(item.getId());
+			return TableColumn.of(item.getId());
 		case 1:
-			return Optional.of(item.getNome());
+			return TableColumn.of(item.getNome());
 		}
 		return Optional.empty();
 	}
 
 	@Override
-	public List<String> getHeaders() {
-		return Arrays.asList("Id", "Nome");
+	public List<TableHeader> getHeaders() {
+		//@formatter:off
+		return headers.stream()
+				.map(TableHeader::of)
+				.filter(op -> op.isPresent())
+				.map(th -> th.get())
+				.collect(Collectors.toList());
+		//@formatter:on
 	}
+
+	@Override
+	public int numColumns() {
+		return getHeaders().size();
+	}
+
+	@Override
+	public Datasource<PontoTransmissao> getDatasource() {
+		return this.pontoTransmissaoDS;
+	}
+
 }
