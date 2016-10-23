@@ -12,8 +12,6 @@ public class DemoReport implements ClassReport {
 	 */
 	private static final long serialVersionUID = 1L;
 
-	//private PontoTransmissaoTableAdapter pontoTransmissaoTA = new PontoTransmissaoTableAdapter();
-
 	@Override
 	public ReportOutputData create(Report report) {
 		//@formatter:off
