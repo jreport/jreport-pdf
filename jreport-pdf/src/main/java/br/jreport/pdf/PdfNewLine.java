@@ -7,7 +7,7 @@ import com.lowagie.text.Document;
 
 import br.jreport.core.api.NewLine;
 
-public class PdfNewLine implements NewLine<Chunk> {
+public class PdfNewLine implements NewLine {
 
 	/**
 	 * 
