@@ -3,7 +3,7 @@ package br.jreport.pdf;
 import br.jreport.core.api.ClassReport;
 import br.jreport.core.api.Report;
 import br.jreport.core.api.ReportOutputData;
-import br.jreport.pdf.adapter.PontoTransmissaoTableAdapter;
+import br.jreport.pdf.property.PontoTransmissaoTableProperty;
 
 public class DemoReport implements ClassReport {
 
@@ -23,7 +23,7 @@ public class DemoReport implements ClassReport {
 			.detail()
 				.text("Listagem de Pontos de Transmissão")
 				.newLine()
-				.table(new PontoTransmissaoTableAdapter())
+				.table(new PontoTransmissaoTableProperty())
 			.buildDetail()
 		.buildReport();
 		//@formatter:on

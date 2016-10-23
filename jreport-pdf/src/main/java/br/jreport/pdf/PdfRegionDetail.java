@@ -7,8 +7,8 @@ import com.lowagie.text.Document;
 import br.jreport.core.api.Detail;
 import br.jreport.core.api.Report;
 import br.jreport.core.api.TableRow;
-import br.jreport.core.api.adapter.TableAdapter;
 import br.jreport.core.api.datasource.Datasource;
+import br.jreport.core.api.property.TableProperty;
 
 public class PdfRegionDetail implements Detail {
 
@@ -50,7 +50,7 @@ public class PdfRegionDetail implements Detail {
 	 * Datasource, br.jreport.core.api.adapter.TableAdapter)
 	 */
 	@Override
-	public <T, A extends TableAdapter<T>> Detail table(A tableAdapter) {
+	public <T, A extends TableProperty<T>> Detail table(A tableAdapter) {
 		PdfTable.of(document, tableAdapter).ifPresent(table -> table.build());
 		return this;
 	}
@@ -63,7 +63,7 @@ public class PdfRegionDetail implements Detail {
 	 * java.util.function.BiConsumer)
 	 */
 	@Override
-	public <T, A extends TableAdapter<T>> Detail table(A tableAdapter, BiConsumer<T, TableRow> eachRow) {
+	public <T, A extends TableProperty<T>> Detail table(A tableAdapter, BiConsumer<T, TableRow> eachRow) {
 		PdfTable.of(document, tableAdapter).ifPresent(table -> table.build(eachRow));
 		return this;
 	}

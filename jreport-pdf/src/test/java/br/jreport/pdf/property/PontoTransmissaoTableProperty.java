@@ -1,4 +1,4 @@
-package br.jreport.pdf.adapter;
+package br.jreport.pdf.property;
 
 import java.util.Arrays;
 import java.util.List;
@@ -7,12 +7,12 @@ import java.util.stream.Collectors;
 
 import br.jreport.core.api.TableColumn;
 import br.jreport.core.api.TableHeader;
-import br.jreport.core.api.adapter.TableAdapter;
 import br.jreport.core.api.datasource.Datasource;
+import br.jreport.core.api.property.TableProperty;
 import br.jreport.pdf.datasource.PontoTransmissaoDS;
 import br.jreport.pdf.model.PontoTransmissao;
 
-public class PontoTransmissaoTableAdapter implements TableAdapter<PontoTransmissao> {
+public class PontoTransmissaoTableProperty implements TableProperty<PontoTransmissao> {
 
 	/**
 	 * 

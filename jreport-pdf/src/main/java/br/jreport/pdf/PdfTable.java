@@ -8,7 +8,7 @@ import com.lowagie.text.pdf.PdfPTable;
 
 import br.jreport.core.api.Table;
 import br.jreport.core.api.TableRow;
-import br.jreport.core.api.adapter.TableAdapter;
+import br.jreport.core.api.property.TableProperty;
 
 public class PdfTable<T> implements Table<T> {
 
@@ -19,14 +19,14 @@ public class PdfTable<T> implements Table<T> {
 
 	private Document document;
 
-	private TableAdapter<T> tableAdapter;
+	private TableProperty<T> tableAdapter;
 
 	private PdfTable() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
 
-	private PdfTable(Document document, TableAdapter<T> tableAdapter) {
+	private PdfTable(Document document, TableProperty<T> tableAdapter) {
 		super();
 		this.document = document;
 		this.tableAdapter = tableAdapter;
@@ -88,7 +88,7 @@ public class PdfTable<T> implements Table<T> {
 		}
 	}
 
-	public static <T> Optional<Table<T>> of(Document document, TableAdapter<T> tableAdapter) {
+	public static <T> Optional<Table<T>> of(Document document, TableProperty<T> tableAdapter) {
 		if (document != null && tableAdapter != null) {
 			return Optional.of(new PdfTable<T>(document, tableAdapter));
 		}
