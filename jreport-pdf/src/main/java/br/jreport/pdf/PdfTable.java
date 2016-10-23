@@ -1,5 +1,6 @@
 package br.jreport.pdf;
 
+import java.util.Optional;
 import java.util.function.BiConsumer;
 
 import com.lowagie.text.Document;
@@ -20,7 +21,12 @@ public class PdfTable<T> implements Table<T> {
 
 	private TableAdapter<T> tableAdapter;
 
-	public PdfTable(Document document, TableAdapter<T> tableAdapter) {
+	private PdfTable() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
+
+	private PdfTable(Document document, TableAdapter<T> tableAdapter) {
 		super();
 		this.document = document;
 		this.tableAdapter = tableAdapter;
@@ -80,6 +86,14 @@ public class PdfTable<T> implements Table<T> {
 			// PdfReport.addToDocument(document, pdfPTable);
 			PdfReport.addToDocument(document, pdfPTable);
 		}
+	}
+
+	public static <T> Optional<Table<T>> of(Document document, TableAdapter<T> tableAdapter) {
+		if (document != null && tableAdapter != null) {
+			return Optional.of(new PdfTable<T>(document, tableAdapter));
+		}
+		return Optional.empty();
+
 	}
 
 }

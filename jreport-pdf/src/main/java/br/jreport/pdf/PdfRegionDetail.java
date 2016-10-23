@@ -50,7 +50,7 @@ public class PdfRegionDetail implements Detail {
 	 */
 	@Override
 	public <T, A extends TableAdapter<T>> Detail table(A tableAdapter) {
-		new PdfTable<>(document, tableAdapter).build();
+		PdfTable.of(document, tableAdapter).ifPresent(table -> table.build());
 		return this;
 	}
 
@@ -62,7 +62,8 @@ public class PdfRegionDetail implements Detail {
 	 * java.util.function.BiConsumer)
 	 */
 	@Override
-	public <T, A extends TableAdapter<T>> Detail table(Class<A> tableAdapter, BiConsumer<T, TableRow> eachRow) {
+	public <T, A extends TableAdapter<T>> Detail table(A tableAdapter, BiConsumer<T, TableRow> eachRow) {
+		PdfTable.of(document, tableAdapter).ifPresent(table -> table.build(eachRow));
 		return this;
 	}
 
