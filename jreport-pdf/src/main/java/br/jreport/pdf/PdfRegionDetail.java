@@ -39,6 +39,7 @@ public class PdfRegionDetail implements Detail {
 	 */
 	@Override
 	public Detail text(String text) {
+		PdfText.of(document, text).ifPresent(txt -> txt.build());
 		return this;
 	}
 

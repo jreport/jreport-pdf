@@ -1,5 +1,8 @@
 package br.jreport.pdf;
 
+import java.util.Optional;
+
+import com.lowagie.text.Document;
 import com.lowagie.text.Paragraph;
 
 import br.jreport.core.api.Text;
@@ -13,17 +16,30 @@ public class PdfText implements Text {
 
 	private String text;
 
-	private Paragraph paragraph;
+	private Document document;
 
-	public PdfText(Paragraph paragraph, String text) {
+	private PdfText() {
 		super();
+	}
+
+	private PdfText(Document document, String text) {
+		super();
+		this.document = document;
 		this.text = text;
-		this.paragraph = paragraph;
 	}
 
 	@Override
 	public void build() {
+		Paragraph paragraph = new Paragraph();
 		paragraph.add(text);
+		PdfReport.addToDocument(document, paragraph);
+	}
+
+	public static Optional<Text> of(Document document, String text) {
+		if (document != null && text != null) {
+			return Optional.of(new PdfText(document, text));
+		}
+		return Optional.empty();
 	}
 
 }
