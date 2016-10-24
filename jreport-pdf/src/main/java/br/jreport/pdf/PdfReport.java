@@ -8,6 +8,7 @@ import com.lowagie.text.DocumentException;
 import com.lowagie.text.Element;
 import com.lowagie.text.pdf.PdfWriter;
 
+import br.jreport.core.StyleClass;
 import br.jreport.core.api.Detail;
 import br.jreport.core.api.Footer;
 import br.jreport.core.api.Report;
@@ -30,6 +31,8 @@ public class PdfReport implements Report {
 	private Detail detail;
 
 	private ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+
+	private StyleClass styleClass;
 
 	public PdfReport() throws FileNotFoundException, DocumentException {
 		super();
