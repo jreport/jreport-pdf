@@ -1,4 +1,4 @@
-package br.jreport.pdf;
+package br.jreport.pdf.regions;
 
 import java.util.function.BiConsumer;
 
@@ -9,6 +9,9 @@ import br.jreport.core.api.Report;
 import br.jreport.core.api.TableRow;
 import br.jreport.core.api.datasource.Datasource;
 import br.jreport.core.api.property.TableProperty;
+import br.jreport.pdf.implementations.PdfNewLine;
+import br.jreport.pdf.implementations.PdfTable;
+import br.jreport.pdf.implementations.PdfText;
 
 public class PdfRegionDetail implements Detail {
 

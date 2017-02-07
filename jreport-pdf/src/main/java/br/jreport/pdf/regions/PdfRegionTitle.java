@@ -1,9 +1,12 @@
-package br.jreport.pdf;
+package br.jreport.pdf.regions;
 
 import com.lowagie.text.Document;
 
 import br.jreport.core.api.Report;
 import br.jreport.core.api.Title;
+import br.jreport.pdf.implementations.PdfNewLine;
+import br.jreport.pdf.implementations.PdfNewPage;
+import br.jreport.pdf.implementations.PdfText;
 
 public class PdfRegionTitle implements Title {
 

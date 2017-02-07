@@ -1,4 +1,4 @@
-package br.jreport.pdf;
+package br.jreport.pdf.aux;
 
 import java.io.ByteArrayOutputStream;
 

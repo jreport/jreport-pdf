@@ -1,4 +1,4 @@
-package br.jreport.pdf;
+package br.jreport.pdf.implementations;
 
 import java.util.Optional;
 
@@ -6,6 +6,7 @@ import com.lowagie.text.Document;
 import com.lowagie.text.Paragraph;
 
 import br.jreport.core.api.Text;
+import br.jreport.pdf.PdfReport;
 
 public class PdfText implements Text {
 

@@ -1,4 +1,4 @@
-package br.jreport.pdf;
+package br.jreport.pdf.implementations;
 
 import java.util.Optional;
 
@@ -6,6 +6,7 @@ import com.lowagie.text.Chunk;
 import com.lowagie.text.Document;
 
 import br.jreport.core.api.NewLine;
+import br.jreport.pdf.PdfReport;
 
 public class PdfNewLine implements NewLine {
 

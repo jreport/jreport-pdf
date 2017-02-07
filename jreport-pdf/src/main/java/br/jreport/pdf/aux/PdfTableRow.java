@@ -1,4 +1,4 @@
-package br.jreport.pdf;
+package br.jreport.pdf.aux;
 
 import br.jreport.core.api.TableRow;
 import br.jreport.core.api.datasource.Datasource;

@@ -14,6 +14,9 @@ import br.jreport.core.api.Footer;
 import br.jreport.core.api.Report;
 import br.jreport.core.api.ReportOutputData;
 import br.jreport.core.api.Title;
+import br.jreport.pdf.aux.PdfReportOutputData;
+import br.jreport.pdf.regions.PdfRegionDetail;
+import br.jreport.pdf.regions.PdfRegionTitle;
 
 public class PdfReport implements Report {
 

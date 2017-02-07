@@ -1,4 +1,4 @@
-package br.jreport.pdf;
+package br.jreport.pdf.implementations;
 
 import java.util.Optional;
 import java.util.function.BiConsumer;
@@ -9,6 +9,8 @@ import com.lowagie.text.pdf.PdfPTable;
 import br.jreport.core.api.Table;
 import br.jreport.core.api.TableRow;
 import br.jreport.core.api.property.TableProperty;
+import br.jreport.pdf.PdfReport;
+import br.jreport.pdf.aux.PdfTableRow;
 
 public class PdfTable<T> implements Table<T> {
 

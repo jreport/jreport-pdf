@@ -16,7 +16,7 @@ public class DemoReport implements ClassReport {
 	private static final long serialVersionUID = 1L;
 
 	@Override
-	public ReportOutputData create(Report report) {
+	public Report templateReport(Report report) {
 		//@formatter:off
 		return report
 			.title()
@@ -30,8 +30,7 @@ public class DemoReport implements ClassReport {
 				.table(new PontoTransmissaoTableProperty(), (pontoTransmissao, tableRow) -> {
 					tableRow.list(new LovalVotacaoDS(pontoTransmissao));
 				})
-			.buildDetail()
-		.buildReport();
+			.buildDetail();
 		//@formatter:on
 	}
 
