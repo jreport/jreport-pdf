@@ -9,7 +9,10 @@ import br.jreport.core.api.Report;
 import br.jreport.core.api.TableRow;
 import br.jreport.core.api.datasource.Datasource;
 import br.jreport.core.api.property.TableProperty;
+import br.jreport.pdf.implementations.PdfImage;
 import br.jreport.pdf.implementations.PdfNewLine;
+import br.jreport.pdf.implementations.PdfNewPage;
+import br.jreport.pdf.implementations.PdfNewSeparator;
 import br.jreport.pdf.implementations.PdfTable;
 import br.jreport.pdf.implementations.PdfText;
 
@@ -31,8 +34,9 @@ public class PdfRegionDetail implements Detail {
 	}
 
 	@Override
-	public Detail image(String src) {
-		return null;
+	public Detail addImage(String src) {
+		PdfImage.of(document, src).ifPresent(image -> image.build());
+		return this;
 	}
 
 	/*
@@ -41,7 +45,7 @@ public class PdfRegionDetail implements Detail {
 	 * @see br.jreport.core.api.Detail#text(java.lang.String)
 	 */
 	@Override
-	public Detail text(String text) {
+	public Detail addText(String text) {
 		PdfText.of(document, text).ifPresent(txt -> txt.build());
 		return this;
 	}
@@ -53,7 +57,7 @@ public class PdfRegionDetail implements Detail {
 	 * Datasource, br.jreport.core.api.adapter.TableAdapter)
 	 */
 	@Override
-	public <T, A extends TableProperty<T>> Detail table(A tableAdapter) {
+	public <T, A extends TableProperty<T>> Detail addTable(A tableAdapter) {
 		PdfTable.of(document, tableAdapter).ifPresent(table -> table.build());
 		return this;
 	}
@@ -66,7 +70,7 @@ public class PdfRegionDetail implements Detail {
 	 * java.util.function.BiConsumer)
 	 */
 	@Override
-	public <T, A extends TableProperty<T>> Detail table(A tableAdapter, BiConsumer<T, TableRow> eachRow) {
+	public <T, A extends TableProperty<T>> Detail addTable(A tableAdapter, BiConsumer<T, TableRow> eachRow) {
 		PdfTable.of(document, tableAdapter).ifPresent(table -> table.build(eachRow));
 		return this;
 	}
@@ -77,7 +81,7 @@ public class PdfRegionDetail implements Detail {
 	 * @see br.jreport.core.api.Detail#newLine()
 	 */
 	@Override
-	public Detail newLine() {
+	public Detail addNewLine() {
 		PdfNewLine.of(document).ifPresent(newLine -> newLine.build());
 		return this;
 	}
@@ -89,8 +93,8 @@ public class PdfRegionDetail implements Detail {
 	 * Datasource)
 	 */
 	@Override
-	public <T, D extends Datasource<T>> Detail list(D datasource) {
-		return null;
+	public <T, D extends Datasource<T>> Detail addList(D datasource) {
+		return this;
 	}
 
 	/*
@@ -101,6 +105,18 @@ public class PdfRegionDetail implements Detail {
 	@Override
 	public Report buildDetail() {
 		return this.report;
+	}
+
+	@Override
+	public Detail addSeparator() {
+		PdfNewSeparator.of(document).ifPresent(newSeparator -> newSeparator.build());
+		return this;
+	}
+
+	@Override
+	public Detail addNewPage() {
+		PdfNewPage.of(document).ifPresent(newPage -> newPage.build());
+		return this;
 	}
 
 }

@@ -4,8 +4,10 @@ import com.lowagie.text.Document;
 
 import br.jreport.core.api.Report;
 import br.jreport.core.api.Title;
+import br.jreport.pdf.implementations.PdfImage;
 import br.jreport.pdf.implementations.PdfNewLine;
 import br.jreport.pdf.implementations.PdfNewPage;
+import br.jreport.pdf.implementations.PdfNewSeparator;
 import br.jreport.pdf.implementations.PdfText;
 
 public class PdfRegionTitle implements Title {
@@ -26,24 +28,31 @@ public class PdfRegionTitle implements Title {
 	}
 
 	@Override
-	public Title image(String src) {
-		return null;
-	}
-
-	@Override
-	public Title text(String text) {
+	public Title addText(String text) {
 		PdfText.of(document, text).ifPresent(txt -> txt.build());
 		return this;
 	}
 
 	@Override
-	public Title newLine() {
+	public Title addImage(String src) {
+		PdfImage.of(document, src).ifPresent(newImage -> newImage.build());
+		return null;
+	}
+
+	@Override
+	public Title addNewLine() {
 		PdfNewLine.of(document).ifPresent(newLine -> newLine.build());
 		return this;
 	}
 
 	@Override
-	public Title newPage() {
+	public Title addSeparator() {
+		PdfNewSeparator.of(document).ifPresent(newSeparator -> newSeparator.build());
+		return this;
+	}
+
+	@Override
+	public Title addNewPage() {
 		PdfNewPage.of(document).ifPresent(newPage -> newPage.build());
 		return this;
 	}
