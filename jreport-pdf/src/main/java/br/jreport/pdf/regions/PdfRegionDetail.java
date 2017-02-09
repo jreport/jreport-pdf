@@ -119,4 +119,34 @@ public class PdfRegionDetail implements Detail {
 		return this;
 	}
 
+	@Override
+	public Detail addImage(String src, String classe) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Detail addText(String text, String classe) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public <T, A extends TableProperty<T>> Detail addTable(A tableProperty, String classe) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public <T, A extends TableProperty<T>> Detail addTable(A tableProperty, BiConsumer<T, TableRow> eachRow, String classe) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public <T, D extends Datasource<T>> Detail addList(D datasource, String classe) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }

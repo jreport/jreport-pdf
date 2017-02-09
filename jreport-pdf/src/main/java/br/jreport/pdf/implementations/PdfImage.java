@@ -1,16 +1,12 @@
 package br.jreport.pdf.implementations;
 
-import java.io.IOException;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.Optional;
 
-import com.lowagie.text.BadElementException;
 import com.lowagie.text.Document;
-import com.lowagie.text.Image;
 
 import br.jreport.core.api.NewImage;
 import br.jreport.pdf.PdfReport;
+import br.jreport.pdf.helper.DocumentHelper;
 
 public class PdfImage implements NewImage {
 
@@ -35,18 +31,7 @@ public class PdfImage implements NewImage {
 
 	@Override
 	public void build() {
-		Image image = null;
-		try {
-			URL imageURL = getClass().getClassLoader().getResource(src);
-			image = Image.getInstance(imageURL);
-		} catch (BadElementException e) {
-			e.printStackTrace();
-		} catch (MalformedURLException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		PdfReport.addToDocument(document, image);
+		PdfReport.addToDocument(document, DocumentHelper.loadImage(src));
 	}
 
 	public static Optional<PdfImage> of(Document document, String src) {

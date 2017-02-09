@@ -21,6 +21,7 @@ public class DemoReport implements ClassReport {
 		return report
 			.title()
 				.addText("Relatório de Teste")
+				.addText("", "")
 				.addText("Abc").addSeparator()
 			.buildTitle()
 			

@@ -2,12 +2,11 @@ package br.jreport.pdf.implementations;
 
 import java.util.Optional;
 
-import com.lowagie.text.Chunk;
 import com.lowagie.text.Document;
-import com.lowagie.text.pdf.draw.LineSeparator;
 
 import br.jreport.core.api.NewSeparator;
 import br.jreport.pdf.PdfReport;
+import br.jreport.pdf.helper.DocumentHelper;
 
 public class PdfNewSeparator implements NewSeparator {
 
@@ -29,9 +28,7 @@ public class PdfNewSeparator implements NewSeparator {
 
 	@Override
 	public void build() {
-		LineSeparator separator = new LineSeparator();
-		separator.setLineWidth(0.1f);
-		PdfReport.addToDocument(document, new Chunk(separator));
+		PdfReport.addToDocument(document, DocumentHelper.createDefaultSeparator());
 	}
 
 	public static Optional<PdfNewSeparator> of(Document document) {

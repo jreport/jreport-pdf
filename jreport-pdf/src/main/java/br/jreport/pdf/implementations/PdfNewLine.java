@@ -2,11 +2,11 @@ package br.jreport.pdf.implementations;
 
 import java.util.Optional;
 
-import com.lowagie.text.Chunk;
 import com.lowagie.text.Document;
 
 import br.jreport.core.api.NewLine;
 import br.jreport.pdf.PdfReport;
+import br.jreport.pdf.helper.DocumentHelper;
 
 public class PdfNewLine implements NewLine {
 
@@ -28,7 +28,7 @@ public class PdfNewLine implements NewLine {
 
 	@Override
 	public void build() {
-		PdfReport.addToDocument(document, Chunk.NEWLINE);
+		PdfReport.addToDocument(document, DocumentHelper.newLine());
 	}
 
 	public static Optional<PdfNewLine> of(Document document) {

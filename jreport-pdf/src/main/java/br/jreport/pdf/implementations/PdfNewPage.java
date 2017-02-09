@@ -5,6 +5,7 @@ import java.util.Optional;
 import com.lowagie.text.Document;
 
 import br.jreport.core.api.NewPage;
+import br.jreport.pdf.helper.DocumentHelper;
 
 public class PdfNewPage implements NewPage {
 
@@ -26,7 +27,7 @@ public class PdfNewPage implements NewPage {
 
 	@Override
 	public void build() {
-		this.document.newPage();
+		DocumentHelper.newPage(this.document);
 	}
 
 	public static Optional<PdfNewPage> of(Document document) {

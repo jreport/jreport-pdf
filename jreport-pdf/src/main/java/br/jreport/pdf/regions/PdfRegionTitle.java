@@ -1,5 +1,6 @@
 package br.jreport.pdf.regions;
 
+
 import com.lowagie.text.Document;
 
 import br.jreport.core.api.Report;
@@ -34,8 +35,20 @@ public class PdfRegionTitle implements Title {
 	}
 
 	@Override
+	public Title addText(String text, String styleClass) {
+		PdfText.of(document, text, styleClass).ifPresent(txt -> txt.build());
+		return this;
+	}
+
+	@Override
 	public Title addImage(String src) {
 		PdfImage.of(document, src).ifPresent(newImage -> newImage.build());
+		return null;
+	}
+
+	@Override
+	public Title addImage(String src, String classe) {
+		// TODO Auto-generated method stub
 		return null;
 	}
 
