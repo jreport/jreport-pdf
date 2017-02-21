@@ -1,9 +1,9 @@
 package br.jreport.pdf.aux;
 
-import br.jreport.core.api.TableRow;
-import br.jreport.core.api.datasource.Datasource;
+import br.jreport.core.api.NewTableRow;
+import br.jreport.core.api.datasource.NewDatasource;
 
-public class PdfTableRow implements TableRow {
+public class PdfTableRow implements NewTableRow {
 
 	/**
 	 * 
@@ -55,7 +55,7 @@ public class PdfTableRow implements TableRow {
 	}
 
 	@Override
-	public <T, D extends Datasource<T>> TableRow list(D datasource) {
+	public <T, D extends NewDatasource<T>> NewTableRow list(D datasource) {
 		return null;
 	}
 

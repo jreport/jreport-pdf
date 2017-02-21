@@ -2,9 +2,10 @@ package br.jreport.pdf.implementations;
 
 import java.util.Optional;
 
-import com.lowagie.text.Document;
+import com.itextpdf.layout.Document;
 
 import br.jreport.core.api.NewPage;
+import br.jreport.pdf.PdfReport;
 import br.jreport.pdf.helper.DocumentHelper;
 
 public class PdfNewPage implements NewPage {
@@ -27,7 +28,7 @@ public class PdfNewPage implements NewPage {
 
 	@Override
 	public void build() {
-		DocumentHelper.newPage(this.document);
+		PdfReport.addToDocument(document, DocumentHelper.newPage());
 	}
 
 	public static Optional<PdfNewPage> of(Document document) {

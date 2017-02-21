@@ -4,10 +4,10 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
-import br.jreport.core.api.datasource.Datasource;
+import br.jreport.core.api.datasource.NewDatasource;
 import br.jreport.pdf.model.PontoTransmissao;
 
-public class PontoTransmissaoDS implements Datasource<PontoTransmissao> {
+public class PontoTransmissaoDS implements NewDatasource<PontoTransmissao> {
 
 	/**
 	 * 

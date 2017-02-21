@@ -1,17 +1,25 @@
 package br.jreport.pdf.regions;
 
 
-import com.lowagie.text.Document;
+import java.util.function.BiConsumer;
 
-import br.jreport.core.api.Report;
-import br.jreport.core.api.Title;
+import com.itextpdf.layout.Document;
+
+import br.jreport.core.api.NewColspanBody;
+import br.jreport.core.api.NewReport;
+import br.jreport.core.api.NewTableRow;
+import br.jreport.core.api.NewTitle;
+import br.jreport.core.api.datasource.NewDatasource;
+import br.jreport.core.api.property.NewTableProperty;
+import br.jreport.pdf.implementations.PdfColspanBody;
+import br.jreport.pdf.implementations.PdfColspanLine;
 import br.jreport.pdf.implementations.PdfImage;
 import br.jreport.pdf.implementations.PdfNewLine;
 import br.jreport.pdf.implementations.PdfNewPage;
 import br.jreport.pdf.implementations.PdfNewSeparator;
 import br.jreport.pdf.implementations.PdfText;
 
-public class PdfRegionTitle implements Title {
+public class PdfRegionTitle implements NewTitle {
 
 	/**
 	 * 
@@ -20,59 +28,103 @@ public class PdfRegionTitle implements Title {
 
 	private Document document;
 
-	private Report report;
+	private NewReport report;
 
-	public PdfRegionTitle(Document document, Report report) {
+	public PdfRegionTitle(Document document, NewReport report) {
 		super();
 		this.document = document;
 		this.report = report;
 	}
 
 	@Override
-	public Title addText(String text) {
+	public NewTitle addText(String text) {
 		PdfText.of(document, text).ifPresent(txt -> txt.build());
 		return this;
 	}
 
 	@Override
-	public Title addText(String text, String styleClass) {
+	public NewTitle addText(String text, String styleClass) {
 		PdfText.of(document, text, styleClass).ifPresent(txt -> txt.build());
 		return this;
 	}
 
 	@Override
-	public Title addImage(String src) {
+	public NewTitle addImage(String src) {
 		PdfImage.of(document, src).ifPresent(newImage -> newImage.build());
 		return null;
 	}
 
 	@Override
-	public Title addImage(String src, String classe) {
-		// TODO Auto-generated method stub
-		return null;
+	public NewTitle addImage(String src, String classe) {
+		PdfImage.of(document, src, classe).ifPresent(newImage -> newImage.build());
+		return this;
 	}
 
 	@Override
-	public Title addNewLine() {
+	public NewTitle addNewLine() {
 		PdfNewLine.of(document).ifPresent(newLine -> newLine.build());
 		return this;
 	}
 
 	@Override
-	public Title addSeparator() {
+	public NewTitle addSeparator() {
 		PdfNewSeparator.of(document).ifPresent(newSeparator -> newSeparator.build());
 		return this;
 	}
 
 	@Override
-	public Title addNewPage() {
+	public NewTitle addNewPage() {
 		PdfNewPage.of(document).ifPresent(newPage -> newPage.build());
+		return this;
+	}
+	
+	@Override
+	//TODO não gostei muito dessa sintaxe podemos verificar melhor maneira de passar o document.
+	public NewTitle addColspanline(NewColspanBody tableProperty) {
+		PdfColspanLine.of(document, (PdfColspanBody)tableProperty).ifPresent(table -> table.build());;
 		return this;
 	}
 
 	@Override
-	public Report buildTitle() {
+	public NewReport buildTitle() {
 		return this.report;
+	}
+
+	
+	@Override
+	public <T, A extends NewTableProperty<T>> NewTitle addTable(A tableProperty) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public <T, A extends NewTableProperty<T>> NewTitle addTable(A tableProperty, String classe) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public <T, A extends NewTableProperty<T>> NewTitle addTable(A tableProperty, BiConsumer<T, NewTableRow> eachRow) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public <T, A extends NewTableProperty<T>> NewTitle addTable(A tableProperty, BiConsumer<T, NewTableRow> eachRow, String classe) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public <T, D extends NewDatasource<T>> NewTitle addList(D datasource) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public <T, D extends NewDatasource<T>> NewTitle addList(D datasource, String classe) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

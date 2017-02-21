@@ -3,75 +3,77 @@ package br.jreport.pdf;
 import java.io.ByteArrayOutputStream;
 import java.io.FileNotFoundException;
 
-import com.lowagie.text.Document;
-import com.lowagie.text.DocumentException;
-import com.lowagie.text.Element;
-import com.lowagie.text.pdf.PdfWriter;
+import com.itextpdf.kernel.pdf.PdfDocument;
+import com.itextpdf.kernel.pdf.PdfWriter;
+import com.itextpdf.layout.Document;
+import com.itextpdf.layout.element.AreaBreak;
+import com.itextpdf.layout.element.BlockElement;
+import com.itextpdf.layout.element.Image;
 
-import br.jreport.core.StyleClass;
-import br.jreport.core.api.Detail;
-import br.jreport.core.api.Footer;
-import br.jreport.core.api.Report;
-import br.jreport.core.api.ReportOutputData;
-import br.jreport.core.api.Title;
+import br.jreport.core.api.NewDetail;
+import br.jreport.core.api.NewFooter;
+import br.jreport.core.api.NewReport;
+import br.jreport.core.api.NewReportOutputData;
+import br.jreport.core.api.NewTitle;
 import br.jreport.pdf.aux.PdfReportOutputData;
 import br.jreport.pdf.regions.PdfRegionDetail;
 import br.jreport.pdf.regions.PdfRegionTitle;
 
-public class PdfReport implements Report {
+public class PdfReport implements NewReport {
 
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
 
-	private Document document = new Document();
+	private Document document;
 
-	private PdfWriter pdfWriter;
+	private NewTitle title;
 
-	private Title title;
-
-	private Detail detail;
+	private NewDetail detail;
 
 	private ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
 
-	private StyleClass styleClass;
-
-	public PdfReport() throws FileNotFoundException, DocumentException {
+	public PdfReport() throws FileNotFoundException {
 		super();
-		this.pdfWriter = PdfWriter.getInstance(document, outputStream);
-		this.document.open();
+		PdfDocument pdfDoc = new PdfDocument(new PdfWriter(outputStream));
+		document = new Document(pdfDoc);
 		this.title = new PdfRegionTitle(this.document, this);
 		this.detail = new PdfRegionDetail(this.document, this);
 	}
 
 	@Override
-	public Title title() {
+	public NewTitle title() {
 		return this.title;
 	}
 
 	@Override
-	public Detail detail() {
+	public NewDetail detail() {
 		return this.detail;
 	}
 
 	@Override
-	public Footer footer() {
+	public NewFooter footer() {
 		return null;
 	}
 
 	@Override
-	public ReportOutputData buildReport() {
+	public NewReportOutputData buildReport() {
 		document.close();
 		return new PdfReportOutputData(outputStream);
 	}
 
-	public static void addToDocument(Document document, Element element) {
-		try {
-			document.add(element);
-		} catch (DocumentException e) {
-			e.printStackTrace();
-		}
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	public static void addToDocument(Document document, BlockElement element) {
+		document.add(element);
+	}
+
+	public static void addToDocument(Document document, Image element) {
+		document.add(element);
+	}
+
+	public static void addToDocument(Document document, AreaBreak element) {
+		document.add(element);
 	}
 
 }

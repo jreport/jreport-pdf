@@ -3,11 +3,11 @@ package br.jreport.pdf.datasource;
 import java.util.List;
 import java.util.Optional;
 
-import br.jreport.core.api.datasource.Datasource;
+import br.jreport.core.api.datasource.NewDatasource;
 import br.jreport.pdf.model.LocalVotacao;
 import br.jreport.pdf.model.PontoTransmissao;
 
-public class LovalVotacaoDS implements Datasource<LocalVotacao> {
+public class LovalVotacaoDS implements NewDatasource<LocalVotacao> {
 
 	/**
 	 * 

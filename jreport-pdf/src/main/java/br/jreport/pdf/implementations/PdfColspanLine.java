@@ -1,70 +1,49 @@
 package br.jreport.pdf.implementations;
 
+import java.util.Optional;
+
+import com.itextpdf.layout.Document;
+
 import br.jreport.core.api.NewColspanLine;
+import br.jreport.pdf.PdfReport;
+import br.jreport.pdf.helper.DocumentHelper;
 
 //TODO Fazer ajustes nessa implementaçãpo
 public class PdfColspanLine implements NewColspanLine {
 
-//	/**
-//	 * 
-//	 */
-//	private static final long serialVersionUID = 1L;
-//
-//	private Document document;
-//
-//	private List<PdfPCell> cells = new ArrayList<PdfPCell>();
-//
-//	private Integer headersColspan = 1;
-//
-//	private PdfColspanLine() {
-//		super();
-//		// TODO Auto-generated constructor stub
-//	}
-//
-//	private PdfColspanLine(Document document) {
-//		super();
-//		this.document = document;
-//	}
-//
-//	public PdfColspanLine addHeadersColspan(Integer headers) {
-//		headersColspan = headers;
-//		return this;
-//	}
-//
-//	public PdfColspanLine addCell(String text) {
-//		Paragraph paragraph = new Paragraph();
-//		paragraph.add(text);
-//		PdfPCell cell = new PdfPCell();
-//		cell.addElement(paragraph);
-//		cells.add(cell);
-//		return this;
-//	}
-//
-//	/*
-//	 * (non-Javadoc)
-//	 * 
-//	 * @see br.jreport.core.api.Table#build(br.jreport.core.api.datasource.
-//	 * Datasource, br.jreport.core.api.adapter.TableAdapter)
-//	 */
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
+	private Document document;
+
+	private PdfColspanBody child;
+
+	public PdfColspanBody addHeadersColspan(Integer cols) {
+		child = new PdfColspanBody(cols);
+		return child;
+	}
+
+	public PdfColspanLine() {
+
+	}
+
+	private PdfColspanLine(Document document, PdfColspanBody child) {
+		this.document = document;
+		this.child = child;
+	}
+
 	@Override
 	public void build() {
-//		if (headersColspan > 0) {
-//			PdfPTable pdfPTable = new PdfPTable(headersColspan);
-//			int numRows = cells.size();
-//			for (int row = 0; row < numRows; row++) {
-//				PdfPCell item = cells.get(row);
-//				pdfPTable.addCell(item);
-//			}
-//			PdfReport.addToDocument(document, pdfPTable);
-//		}
+		PdfReport.addToDocument(document, DocumentHelper.createColspan(child.getHeadersColspan(), child.getCells()));
 	}
-//
-//	public static <T> Optional<NewColspanLine> of(Document document) {
-//		if (document != null) {
-//			return Optional.of(new PdfColspanLine(document));
-//		}
-//		return Optional.empty();
-//
-//	}
+
+	public static Optional<PdfColspanLine> of(Document document, PdfColspanBody child) {
+		if (document != null) {
+			return Optional.of(new PdfColspanLine(document, child));
+		}
+		return Optional.empty();
+	}
 
 }

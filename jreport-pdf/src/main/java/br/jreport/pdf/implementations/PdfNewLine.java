@@ -2,7 +2,7 @@ package br.jreport.pdf.implementations;
 
 import java.util.Optional;
 
-import com.lowagie.text.Document;
+import com.itextpdf.layout.Document;
 
 import br.jreport.core.api.NewLine;
 import br.jreport.pdf.PdfReport;

@@ -3,16 +3,16 @@ package br.jreport.pdf.implementations;
 import java.util.Optional;
 import java.util.function.BiConsumer;
 
-import com.lowagie.text.Document;
-import com.lowagie.text.pdf.PdfPTable;
+import com.itextpdf.layout.Document;
+import com.itextpdf.layout.element.Table;
 
-import br.jreport.core.api.Table;
-import br.jreport.core.api.TableRow;
-import br.jreport.core.api.property.TableProperty;
+import br.jreport.core.api.NewTable;
+import br.jreport.core.api.NewTableRow;
+import br.jreport.core.api.property.NewTableProperty;
 import br.jreport.pdf.PdfReport;
-import br.jreport.pdf.aux.PdfTableRow;
+import br.jreport.pdf.helper.DocumentHelper;
 
-public class PdfTable<T> implements Table<T> {
+public class PdfTable<T> implements NewTable<T> {
 
 	/**
 	 * 
@@ -21,17 +21,29 @@ public class PdfTable<T> implements Table<T> {
 
 	private Document document;
 
-	private TableProperty<T> tableAdapter;
+	private String classe = null;
+
+	private String headerClasse = null;
+
+	private NewTableProperty<T> tableAdapter;
 
 	private PdfTable() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
 
-	private PdfTable(Document document, TableProperty<T> tableAdapter) {
+	private PdfTable(Document document, NewTableProperty<T> tableAdapter) {
 		super();
 		this.document = document;
 		this.tableAdapter = tableAdapter;
+	}
+
+	private PdfTable(Document document, NewTableProperty<T> tableAdapter, String classe, String headerClasse) {
+		super();
+		this.document = document;
+		this.tableAdapter = tableAdapter;
+		this.classe = classe;
+		this.headerClasse = headerClasse;
 	}
 
 	/*
@@ -42,19 +54,8 @@ public class PdfTable<T> implements Table<T> {
 	 */
 	@Override
 	public void build() {
-		if (tableAdapter.numColumns() > 0) {
-			PdfPTable pdfPTable = new PdfPTable(tableAdapter.numColumns());
-			tableAdapter.getHeaders().stream().forEach(th -> pdfPTable.addCell(th.getText()));
-			int numColumns = tableAdapter.numColumns();
-			int numRows = tableAdapter.getDatasource().getList().size();
-			for (int row = 0; row < numRows; row++) {
-				T item = tableAdapter.getDatasource().getList().get(row);
-				for (int column = 0; column < numColumns; column++) {
-					tableAdapter.getColumn(item, column).ifPresent(td -> pdfPTable.addCell(td.getText()));
-				}
-			}
-			PdfReport.addToDocument(document, pdfPTable);
-		}
+		Table table = DocumentHelper.createTable(tableAdapter, classe, headerClasse);
+		PdfReport.addToDocument(document, table);
 	}
 
 	/*
@@ -65,37 +66,23 @@ public class PdfTable<T> implements Table<T> {
 	 * java.util.function.BiConsumer)
 	 */
 	@Override
-	public void build(BiConsumer<T, TableRow> eachRow) {
-		if (tableAdapter.numColumns() > 0) {
-			PdfPTable pdfPTable = new PdfPTable(tableAdapter.numColumns());
-			tableAdapter.getHeaders().stream().forEach(th -> pdfPTable.addCell(th.getText()));
-			int qtdColumns = tableAdapter.numColumns();
-			int qtdRows = tableAdapter.getDatasource().getList().size();
-			// Iteração por linha
-			for (int row = 0; row < qtdRows; row++) {
-				T item = tableAdapter.getDatasource().getList().get(row);
-				boolean last = row == qtdRows - 1;
-				boolean first = row == 0;
-				boolean odd = row % 2 == 1;
-				boolean even = row % 2 == 0;
-				TableRow tableRow = new PdfTableRow(row, last, first, odd, even);
-				eachRow.accept(item, tableRow);
-				// Iteração por colunas
-				for (int column = 0; column < qtdColumns; column++) {
-					tableAdapter.getColumn(item, column).ifPresent(td -> pdfPTable.addCell(td.getText()));
-				}
-			}
-			// PdfReport.addToDocument(document, pdfPTable);
-			PdfReport.addToDocument(document, pdfPTable);
-		}
+	public void build(BiConsumer<T, NewTableRow> eachRow) {
+		Table table = DocumentHelper.createTable(tableAdapter, eachRow, classe, headerClasse);
+		PdfReport.addToDocument(document, table);
 	}
 
-	public static <T> Optional<Table<T>> of(Document document, TableProperty<T> tableAdapter) {
+	public static <T> Optional<NewTable<T>> of(Document document, NewTableProperty<T> tableAdapter) {
 		if (document != null && tableAdapter != null) {
 			return Optional.of(new PdfTable<T>(document, tableAdapter));
 		}
 		return Optional.empty();
+	}
 
+	public static <T> Optional<NewTable<T>> of(Document document, NewTableProperty<T> tableAdapter, String classe, String headerClasse) {
+		if (document != null && tableAdapter != null) {
+			return Optional.of(new PdfTable<T>(document, tableAdapter, classe, headerClasse));
+		}
+		return Optional.empty();
 	}
 
 }

@@ -3,13 +3,13 @@ package br.jreport.pdf.implementations;
 import java.util.Optional;
 
 import com.google.common.base.Strings;
-import com.lowagie.text.Document;
+import com.itextpdf.layout.Document;
 
-import br.jreport.core.api.Text;
+import br.jreport.core.api.NewText;
 import br.jreport.pdf.PdfReport;
 import br.jreport.pdf.helper.DocumentHelper;
 
-public class PdfText implements Text {
+public class PdfText implements NewText {
 
 	/**
 	 * 
@@ -18,7 +18,7 @@ public class PdfText implements Text {
 
 	private String text;
 
-	private String style;
+	private String style = null;
 
 	private Document document;
 
@@ -41,21 +41,17 @@ public class PdfText implements Text {
 
 	@Override
 	public void build() {
-		if (style != null) {
-			PdfReport.addToDocument(document, DocumentHelper.createText(text));
-		} else {
-			PdfReport.addToDocument(document, DocumentHelper.createText(text, style));
-		}
+		PdfReport.addToDocument(document, DocumentHelper.createText(text, style));
 	}
 
-	public static Optional<Text> of(Document document, String text) {
+	public static Optional<NewText> of(Document document, String text) {
 		if (document != null && !Strings.isNullOrEmpty(text)) {
 			return Optional.of(new PdfText(document, text));
 		}
 		return Optional.empty();
 	}
 
-	public static Optional<Text> of(Document document, String text, String style) {
+	public static Optional<NewText> of(Document document, String text, String style) {
 		if (document != null && !Strings.isNullOrEmpty(text) && !Strings.isNullOrEmpty(style)) {
 			return Optional.of(new PdfText(document, text, style));
 		}

@@ -4,19 +4,18 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
-import com.lowagie.text.DocumentException;
-
 import br.jreport.core.JReportEngine;
-import br.jreport.core.api.ReportOutputData;
+import br.jreport.core.api.NewReportOutputData;
 
 /**
  * Unit test for simple App.
  */
 public class AppTest {
-	public static void main(String[] args) throws DocumentException, IOException {
+	
+	public static void main(String[] args) throws IOException {
 		DemoReport demoReport = new DemoReport();
-		ReportOutputData reportOutputData = JReportEngine.generate(demoReport, new PdfReport());
-		FileOutputStream outputStream = new FileOutputStream(new File("target/text.pdf"));
+		NewReportOutputData reportOutputData = JReportEngine.generate(demoReport, new PdfReport());
+		FileOutputStream outputStream = new FileOutputStream(new File("target/text2.pdf"));
 		outputStream.write(reportOutputData.getOutputStream().toByteArray());
 		outputStream.close();
 	}

@@ -1,14 +1,15 @@
 package br.jreport.pdf;
 
 import br.jreport.core.annotation.JsonStyleClass;
-import br.jreport.core.api.ClassReport;
-import br.jreport.core.api.Report;
+import br.jreport.core.api.NewClassReport;
+import br.jreport.core.api.NewReport;
 import br.jreport.pdf.datasource.LovalVotacaoDS;
 import br.jreport.pdf.datasource.PontoTransmissaoDS;
+import br.jreport.pdf.implementations.PdfColspanLine;
 import br.jreport.pdf.property.PontoTransmissaoTableProperty;
 
 @JsonStyleClass("demo.report")
-public class DemoReport implements ClassReport {
+public class DemoReport implements NewClassReport {
 
 	/**
 	 * 
@@ -16,12 +17,17 @@ public class DemoReport implements ClassReport {
 	private static final long serialVersionUID = 1L;
 
 	@Override
-	public Report templateReport(Report report) {
+	public NewReport templateReport(NewReport report) {
 		//@formatter:off
 		return report
 			.title()
 				.addText("Relatório de Teste")
-				.addText("", "")
+				.addColspanline(new PdfColspanLine()
+						.addHeadersColspan(4)
+						.addText("Colspan 1 center", "center")
+						.addTable(new PontoTransmissaoTableProperty(), "left")
+						.addText("Colspan 2 left", "left")
+						.addText("Colspan 3 right", "right"))
 				.addText("Abc").addSeparator()
 			.buildTitle()
 			
@@ -32,7 +38,8 @@ public class DemoReport implements ClassReport {
 				.addTable(new PontoTransmissaoTableProperty(), (pontoTransmissao, tableRow) -> {
 					tableRow.list(new LovalVotacaoDS(pontoTransmissao));
 				})
-			.buildDetail();
+			.buildDetail()
+			;
 		//@formatter:on
 	}
 

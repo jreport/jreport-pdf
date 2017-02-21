@@ -1,19 +1,19 @@
 package br.jreport.pdf.style;
 
-import java.awt.Color;
 import java.lang.reflect.Field;
 import java.util.Map;
 import java.util.Optional;
 
 import com.google.common.base.Splitter;
 import com.google.common.base.Strings;
+import com.itextpdf.kernel.color.Color;
+import com.itextpdf.kernel.color.DeviceRgb;
+import com.itextpdf.layout.property.TextAlignment;
 
-import br.jreport.core.api.TextStyle;
-import br.jreport.pdf.enums.FontStyle;
-import br.jreport.pdf.enums.TextAlign;
+import br.jreport.core.api.NewTextStyle;
 import br.jreport.pdf.enums.TextDecoration;
 
-public class TextStyleClass implements TextStyle<TextStyleClass> {
+public class TextStyleClass implements NewTextStyle<TextStyleClass> {
 
 	/**
 	 * 
@@ -22,29 +22,38 @@ public class TextStyleClass implements TextStyle<TextStyleClass> {
 
 	/** Text **/
 
-	private Color color = Color.BLACK;
+	private Color color = Color.BLACK; // ok
 
-	private TextAlign textAlign = TextAlign.JUSTIFIED;
+	private TextAlignment textAlign = TextAlignment.JUSTIFIED; // ok
 
-	private TextDecoration textDecoration = TextDecoration.NONE;
+	private TextDecoration textDecoration = TextDecoration.NONE; // ok
 
-	private float textIndent = 0;
+	private float textIndent = 0; // ok
 
-	private float textMarginLeft = 0;
+	private float textMarginLeft = 0; // ok
 
 	/** Font **/
 
-	private float fontSize = 9;
+	private float fontSize = 9; // ok
 
-	private FontStyle fontStyle = FontStyle.NORMAL;
+	private boolean fontStyle = false; // ok
+
+	private boolean fontBold = false; // ok
 
 	public static void main(String[] args) {
 		TextStyleClass a = new TextStyleClass("text-align: center ; font-size:1.5; font-style:italic;  "
 				+ "color:#005000; text-decoration: underline; background-color: #FFFFFF; text-indent:10; indentation-left: 10");
 		System.out.println(a);
 	}
+	
+	public static Optional<TextStyleClass> of(String style) {
+		if (!Strings.isNullOrEmpty(style)) {
+			return Optional.of(new TextStyleClass(style));
+		}
+		return Optional.of(new TextStyleClass(""));
+	}
 
-	private TextStyleClass(String style) {
+	protected TextStyleClass(String style) {
 		try {
 			if (style.contains(":")) {
 				Map<String, String> map = Splitter.on(";").trimResults().omitEmptyStrings().withKeyValueSeparator(":").split(style);
@@ -54,8 +63,9 @@ public class TextStyleClass implements TextStyle<TextStyleClass> {
 				setTextIndent(map.get("text-indent"));
 				setTextMarginLeft(map.get("margin-left"));
 				setFontSize(map.get("font-size"));
-				setFontStyle(map.get("font-style"), map.get("font-weight"));
-			} else {
+				setFontStyle(map.get("font-style"));
+				setFontWeight(map.get("font-weight"));
+			} else if (!style.isEmpty()) {
 				throw new Exception("formato css inválido, chave e valor separados por ':' e elementos separados por ';' ");
 			}
 		} catch (Exception e) {
@@ -92,28 +102,30 @@ public class TextStyleClass implements TextStyle<TextStyleClass> {
 		}
 	}
 
-	public void setFontStyle(String fontStyle, String fontWeight) {
+	@Override
+	public void setFontStyle(String fontStyle) {
 		if (fontStyle != null) {
 			fontStyle = fontStyle.trim().toUpperCase().equals("NORMAL") ? null : fontStyle;
 		}
+		if (fontStyle != null) {
+			this.fontStyle = true;
+		}
+	}
+
+	@Override
+	public void setFontWeight(String fontWeight) {
 		if (fontWeight != null) {
 			fontWeight = fontWeight.trim().toUpperCase().equals("NORMAL") ? null : fontWeight;
 		}
-		if (fontStyle != null && fontWeight == null) {
-			this.fontStyle = FontStyle.valueOf(fontStyle.trim().toUpperCase());
-		} else if (fontStyle == null && fontWeight != null) {
-			this.fontStyle = FontStyle.valueOf(fontWeight.trim().toUpperCase());
-		} else if (fontStyle != null && fontWeight != null) {
-			if (fontStyle.trim().toUpperCase().equals("ITALIC") && fontWeight.trim().toUpperCase().equals("BOLD")) {
-				this.fontStyle = FontStyle.BOLDITALIC;
-			}
+		if (fontWeight != null) {
+			this.fontStyle = true;
 		}
 	}
 
 	@Override
 	public void setTextAlign(String textAlign) {
 		if (textAlign != null) {
-			this.textAlign = TextAlign.valueOf(textAlign.trim().toUpperCase());
+			this.textAlign = TextAlignment.valueOf(textAlign.trim().toUpperCase());
 		}
 	}
 
@@ -132,11 +144,13 @@ public class TextStyleClass implements TextStyle<TextStyleClass> {
 	public void setColor(String fontColor) {
 		if (fontColor != null) {
 			if (fontColor.trim().startsWith("#")) {
-				this.color = Color.decode(fontColor.trim().toUpperCase());
+				java.awt.Color parse = java.awt.Color.decode(fontColor.trim().toUpperCase());
+				this.color = new DeviceRgb(parse.getRed(), parse.getGreen(), parse.getBlue());
 			} else {
 				try {
 					Field field = Color.class.getField(fontColor.trim().toLowerCase());
-					this.color = (Color) field.get(null);
+					java.awt.Color parse = (java.awt.Color) field.get(null);
+					this.color = new DeviceRgb(parse.getRed(), parse.getGreen(), parse.getBlue());
 				} catch (NoSuchFieldException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -160,78 +174,41 @@ public class TextStyleClass implements TextStyle<TextStyleClass> {
 				+ textIndent + ", marginLeft=" + textMarginLeft + ", fontSize=" + fontSize + ", fontStyle=" + fontStyle + "]";
 	}
 
-	public static Optional<TextStyleClass> of(String style) {
-		if (!Strings.isNullOrEmpty(style)) {
-			return Optional.of(new TextStyleClass(style));
-		}
-		return Optional.empty();
-	}
-
 	@Override
 	public TextStyleClass build() {
 		return this;
-	}
-
-	@Override
-	public void setFontStyle(String fontStyle) {
-		// TODO Auto-generated method stub
-
-	}
-
-	public TextAlign getTextAlign() {
-		return textAlign;
-	}
-
-	public void setTextAlign(TextAlign textAlign) {
-		this.textAlign = textAlign;
-	}
-
-	public FontStyle getFontStyle() {
-		return fontStyle;
-	}
-
-	public void setFontStyle(FontStyle fontStyle) {
-		this.fontStyle = fontStyle;
-	}
-
-	public float getFontSize() {
-		return fontSize;
-	}
-
-	public void setFontSize(float fontSize) {
-		this.fontSize = fontSize;
 	}
 
 	public Color getColor() {
 		return color;
 	}
 
-	public void setColor(Color fontColor) {
-		this.color = fontColor;
+	public TextAlignment getTextAlign() {
+		return textAlign;
 	}
 
 	public TextDecoration getTextDecoration() {
 		return textDecoration;
 	}
 
-	public void setTextDecoration(TextDecoration textDecoration) {
-		this.textDecoration = textDecoration;
-	}
-
 	public float getTextIndent() {
 		return textIndent;
 	}
 
-	public void setTextIndent(float indent) {
-		this.textIndent = indent;
-	}
-
-	public float getMarginLeft() {
+	public float getTextMarginLeft() {
 		return textMarginLeft;
 	}
 
-	public void setMarginLeft(float marginLeft) {
-		this.textMarginLeft = marginLeft;
+	public float getFontSize() {
+		return fontSize;
+	}
+
+	public boolean isFontStyle() {
+		return fontStyle;
+	}
+
+	public boolean isFontBold() {
+		return fontBold;
 	}
 
 }

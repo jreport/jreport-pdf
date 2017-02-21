@@ -1,7 +1,7 @@
 package br.jreport.pdf.enums;
 
-import com.lowagie.text.PageSize;
-import com.lowagie.text.Rectangle;
+import com.itextpdf.kernel.geom.PageSize;
+import com.itextpdf.kernel.geom.Rectangle;
 
 public enum PageOrientation {
 	/**
