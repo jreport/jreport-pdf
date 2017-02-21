@@ -20,6 +20,7 @@ public class PdfColspanLine implements NewColspanLine {
 
 	private PdfColspanBody child;
 
+	@Override
 	public PdfColspanBody addHeadersColspan(Integer cols) {
 		child = new PdfColspanBody(cols);
 		return child;
