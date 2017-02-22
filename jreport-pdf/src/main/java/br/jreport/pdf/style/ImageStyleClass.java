@@ -7,7 +7,14 @@ import com.google.common.base.Splitter;
 import com.google.common.base.Strings;
 import com.itextpdf.layout.property.HorizontalAlignment;
 
-public class ImageStyleClass {
+import br.jreport.core.api.NewImageStyle;
+
+public class ImageStyleClass implements NewImageStyle {
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -7251324692135965333L;
 
 	private HorizontalAlignment align = HorizontalAlignment.CENTER;
 
@@ -26,7 +33,7 @@ public class ImageStyleClass {
 		try {
 			if (style.contains(":")) {
 				Map<String, String> map = Splitter.on(";").trimResults().omitEmptyStrings().withKeyValueSeparator(":").split(style);
-				setAlign(map.get("align"));
+				setHorizontalAlignment(map.get("align"));
 				setWidth(map.get("width"));
 				setHeight(map.get("height"));
 			} else if (!style.isEmpty()) {
@@ -37,19 +44,19 @@ public class ImageStyleClass {
 		}
 	}
 
-	private void setWidth(String width) {
+	public void setWidth(String width) {
 		if (width != null) {
 			this.width = Float.valueOf(width.trim().toUpperCase());
 		}
 	}
 
-	private void setHeight(String height) {
+	public void setHeight(String height) {
 		if (height != null) {
 			this.height = Float.valueOf(height.trim().toUpperCase());
 		}
 	}
 
-	private void setAlign(String textAlign) {
+	public void setHorizontalAlignment(String textAlign) {
 		if (textAlign != null) {
 			this.align = HorizontalAlignment.valueOf(textAlign.trim().toUpperCase());
 		}

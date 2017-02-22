@@ -72,9 +72,10 @@ public class DocumentHelper {
 		return p;
 	}
 	
-	public static Cell setupCell(String p, TableDataStyleClass styleClass) {
+	public static Cell setupCell(Paragraph p, String estilo) {
+		TableDataStyleClass styleClass = (TableDataStyleClass) TableDataStyleClass.of(estilo).get();
 		Cell cell = new Cell(styleClass.getRolspan(), styleClass.getColspan());
-		cell.add(new Paragraph(p));
+		cell.add(p);
 		if (styleClass.getHeight() != null) {
 			cell.setHeight(styleClass.getHeight());
 		}
@@ -100,16 +101,15 @@ public class DocumentHelper {
 	}
 	
 	public static <T> Table createTable(NewTableProperty<T> tableAdapter, String classe, String headerClasse) {
-		TableDataStyleClass styleClass = (TableDataStyleClass) TableDataStyleClass.of(classe).get();
 		if (tableAdapter.numColumns() > 0) {
 			Table pdfPTable = new Table(tableAdapter.numColumns());
-			tableAdapter.getHeaders().stream().forEach(th -> pdfPTable.addCell(setupCell(th.getText(), styleClass)));
+			tableAdapter.getHeaders().stream().forEach(th -> pdfPTable.addCell(setupCell(setupText(th.getText(), headerClasse), headerClasse)));
 			int numColumns = tableAdapter.numColumns();
 			int numRows = tableAdapter.getDatasource().getList().size();
 			for (int row = 0; row < numRows; row++) {
 				T item = tableAdapter.getDatasource().getList().get(row);
 				for (int column = 0; column < numColumns; column++) {
-					tableAdapter.getColumn(item, column).ifPresent(td -> pdfPTable.addCell(setupCell(td.getText(), styleClass)));
+					tableAdapter.getColumn(item, column).ifPresent(td -> pdfPTable.addCell(setupCell(setupText(td.getText(), classe), classe)));
 				}
 			}
 			return pdfPTable;
@@ -118,10 +118,9 @@ public class DocumentHelper {
 	}
 	
 	public static <T> Table createTable(NewTableProperty<T> tableAdapter, BiConsumer<T, NewTableRow> eachRow, String classe, String headerClasse) {
-		TableDataStyleClass styleClass = (TableDataStyleClass) TableDataStyleClass.of(classe).get();
 		if (tableAdapter.numColumns() > 0) {
 			Table pdfPTable = new Table(tableAdapter.numColumns());
-			tableAdapter.getHeaders().stream().forEach(th -> pdfPTable.addCell(setupCell(th.getText(), styleClass)));
+			tableAdapter.getHeaders().stream().forEach(th -> pdfPTable.addCell(setupCell(setupText(th.getText(), headerClasse), headerClasse)));
 			int qtdColumns = tableAdapter.numColumns();
 			int qtdRows = tableAdapter.getDatasource().getList().size();
 			// Iteração por linha
@@ -135,7 +134,7 @@ public class DocumentHelper {
 				eachRow.accept(item, tableRow);
 				// Iteração por colunas
 				for (int column = 0; column < qtdColumns; column++) {
-					tableAdapter.getColumn(item, column).ifPresent(td -> pdfPTable.addCell(setupCell(td.getText(), styleClass)));
+					tableAdapter.getColumn(item, column).ifPresent(td -> pdfPTable.addCell(setupCell(setupText(td.getText(), classe), classe)));
 				}
 			}
 			return pdfPTable;

@@ -13,7 +13,7 @@ import com.itextpdf.layout.property.TextAlignment;
 import br.jreport.core.api.NewTextStyle;
 import br.jreport.pdf.enums.TextDecoration;
 
-public class TextStyleClass implements NewTextStyle<TextStyleClass> {
+public class TextStyleClass implements NewTextStyle {
 
 	/**
 	 * 
@@ -174,10 +174,6 @@ public class TextStyleClass implements NewTextStyle<TextStyleClass> {
 				+ textIndent + ", marginLeft=" + textMarginLeft + ", fontSize=" + fontSize + ", fontStyle=" + fontStyle + "]";
 	}
 
-	@Override
-	public TextStyleClass build() {
-		return this;
-	}
 
 	public Color getColor() {
 		return color;

@@ -38,8 +38,7 @@ public class DemoReport implements NewClassReport {
 				.addTable(new PontoTransmissaoTableProperty(), (pontoTransmissao, tableRow) -> {
 					tableRow.list(new LovalVotacaoDS(pontoTransmissao));
 				})
-			.buildDetail()
-			;
+			.buildDetail();
 		//@formatter:on
 	}
 

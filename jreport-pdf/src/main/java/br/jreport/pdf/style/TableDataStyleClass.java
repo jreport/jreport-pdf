@@ -11,7 +11,9 @@ import com.itextpdf.kernel.color.DeviceRgb;
 import com.itextpdf.layout.property.HorizontalAlignment;
 import com.itextpdf.layout.property.VerticalAlignment;
 
-public class TableDataStyleClass extends TextStyleClass {
+import br.jreport.core.api.NewTableStyle;
+
+public class TableDataStyleClass implements NewTableStyle {
 
 	/**
 	 * 
@@ -37,7 +39,7 @@ public class TableDataStyleClass extends TextStyleClass {
 	private int rolspan = 1;
 	private Color backgroundCellColor = Color.WHITE;
 
-	public static Optional<TextStyleClass> of(String style) {
+	public static Optional<TableDataStyleClass> of(String style) {
 		if (!Strings.isNullOrEmpty(style)) {
 			return Optional.of(new TableDataStyleClass(style));
 		}
@@ -45,7 +47,6 @@ public class TableDataStyleClass extends TextStyleClass {
 	}
 
 	protected TableDataStyleClass(String style) {
-		super(style);
 		try {
 			if (style.contains(":")) {
 				Map<String, String> map = Splitter.on(";").trimResults().omitEmptyStrings().withKeyValueSeparator(":").split(style);
@@ -61,6 +62,7 @@ public class TableDataStyleClass extends TextStyleClass {
 				setBorderBottomWidth(map.get("border-bottom-width"));
 
 				setColspan(map.get("colspan"));
+				setRolspan(map.get("rolspan"));
 				setBackgroundCellColor(map.get("background-color"));
 				setWidth(map.get("width"));
 			} else if (!style.isEmpty()) {
@@ -71,7 +73,7 @@ public class TableDataStyleClass extends TextStyleClass {
 		}
 	}
 
-	private void setWidth(String width) {
+	public void setWidth(String width) {
 		if (width != null) {
 			try {
 				this.width = Float.valueOf(width.trim());
@@ -81,7 +83,7 @@ public class TableDataStyleClass extends TextStyleClass {
 		}
 	}
 
-	private void setBackgroundCellColor(String backgroundCellColor) {
+	public void setBackgroundCellColor(String backgroundCellColor) {
 		if (backgroundCellColor != null) {
 			if (backgroundCellColor.trim().startsWith("#")) {
 				java.awt.Color parse = java.awt.Color.decode(backgroundCellColor.trim().toUpperCase());
@@ -107,13 +109,20 @@ public class TableDataStyleClass extends TextStyleClass {
 		}
 	}
 
-	private void setColspan(String colspan) {
+	public void setColspan(String colspan) {
 		if (colspan != null) {
 			this.colspan = Integer.valueOf(colspan.trim());
 		}
 	}
 
-	private void setBorderColor(String borderColor) {
+	@Override
+	public void setRolspan(String rolspan) {
+		if (rolspan != null) {
+			this.rolspan = Integer.valueOf(rolspan.trim());
+		}
+	}
+
+	public void setBorderColor(String borderColor) {
 		if (borderColor != null) {
 			if (borderColor.trim().startsWith("#")) {
 				java.awt.Color parse = java.awt.Color.decode(borderColor.trim().toUpperCase());
@@ -139,7 +148,7 @@ public class TableDataStyleClass extends TextStyleClass {
 		}
 	}
 
-	private void setBorderWidth(String borderWidth) {
+	public void setBorderWidth(String borderWidth) {
 		if (borderWidth != null) {
 			try {
 				this.borderWidth = Float.valueOf(borderWidth.trim());
@@ -149,7 +158,7 @@ public class TableDataStyleClass extends TextStyleClass {
 		}
 	}
 
-	private void setBorderTopWidth(String borderTopWidth) {
+	public void setBorderTopWidth(String borderTopWidth) {
 		if (borderTopWidth != null) {
 			try {
 				this.borderTopWidth = Float.valueOf(borderTopWidth.trim());
@@ -159,7 +168,7 @@ public class TableDataStyleClass extends TextStyleClass {
 		}
 	}
 
-	private void setBorderLeftWidth(String borderLeftWidth) {
+	public void setBorderLeftWidth(String borderLeftWidth) {
 		if (borderLeftWidth != null) {
 			try {
 				this.borderLeftWidth = Float.valueOf(borderLeftWidth.trim());
@@ -169,7 +178,7 @@ public class TableDataStyleClass extends TextStyleClass {
 		}
 	}
 
-	private void setBorderRightWidth(String borderRightWidth) {
+	public void setBorderRightWidth(String borderRightWidth) {
 		if (borderRightWidth != null) {
 			try {
 				this.borderRightWidth = Float.valueOf(borderRightWidth.trim());
@@ -179,7 +188,7 @@ public class TableDataStyleClass extends TextStyleClass {
 		}
 	}
 
-	private void setBorderBottomWidth(String borderBottomWidth) {
+	public void setBorderBottomWidth(String borderBottomWidth) {
 		if (borderBottomWidth != null) {
 			try {
 				this.borderBottomWidth = Float.valueOf(borderBottomWidth.trim());
@@ -189,18 +198,7 @@ public class TableDataStyleClass extends TextStyleClass {
 		}
 	}
 
-	// public void setBorder(String border) {
-	// if (border != null) {
-	// try {
-	// this.border = BorderStyle.valueOf(border.trim());
-	// } catch (NumberFormatException e) {
-	// throw new NumberFormatException("Elemento inválido para border, valor: "
-	// + border);
-	// }
-	// }
-	// }
-
-	private void setVerticalAlignment(String verticalAlignment) {
+	public void setVerticalAlignment(String verticalAlignment) {
 		if (verticalAlignment != null) {
 			try {
 				this.verticalAlignment = VerticalAlignment.valueOf(verticalAlignment.trim().toUpperCase());
@@ -210,7 +208,7 @@ public class TableDataStyleClass extends TextStyleClass {
 		}
 	}
 
-	private void setHorizontalAlignment(String horizontalAlignment) {
+	public void setHorizontalAlignment(String horizontalAlignment) {
 		if (horizontalAlignment != null) {
 			try {
 				this.horizontalAlignment = HorizontalAlignment.valueOf(horizontalAlignment.trim().toUpperCase());
@@ -220,7 +218,7 @@ public class TableDataStyleClass extends TextStyleClass {
 		}
 	}
 
-	private void setHeight(String height) {
+	public void setHeight(String height) {
 		if (height != null) {
 			try {
 				this.height = Float.valueOf(height.trim());
@@ -281,7 +279,5 @@ public class TableDataStyleClass extends TextStyleClass {
 	public Color getBackgroundCellColor() {
 		return backgroundCellColor;
 	}
-
-
 
 }
