@@ -1,6 +1,6 @@
 package br.jreport.pdf.aux;
 
-import br.jreport.core.api.NewTableRow;
+import br.jreport.core.api.aux.NewTableRow;
 import br.jreport.core.api.datasource.NewDatasource;
 
 public class PdfTableRow implements NewTableRow {

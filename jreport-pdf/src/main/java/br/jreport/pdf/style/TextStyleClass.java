@@ -10,10 +10,11 @@ import com.itextpdf.kernel.color.Color;
 import com.itextpdf.kernel.color.DeviceRgb;
 import com.itextpdf.layout.property.TextAlignment;
 
-import br.jreport.core.api.NewTextStyle;
+import br.jreport.core.impl.NewTextStyleIml;
+import br.jreport.core.impl.Style;
 import br.jreport.pdf.enums.TextDecoration;
 
-public class TextStyleClass implements NewTextStyle {
+public class TextStyleClass extends NewTextStyleIml {
 
 	/**
 	 * 
@@ -22,60 +23,58 @@ public class TextStyleClass implements NewTextStyle {
 
 	/** Text **/
 
-	private Color color = Color.BLACK; // ok
+	private Color color;
+	private TextAlignment textAlign;
+	private TextAlignment textAlignNumber;
+	private TextDecoration textDecoration;
+	private float textIndent;
+	private float textMarginLeft;
+	private float fontSize;
+	private boolean fontStyle;
+	private boolean fontBold;
 
-	private TextAlignment textAlign = TextAlignment.JUSTIFIED; // ok
-
-	private TextDecoration textDecoration = TextDecoration.NONE; // ok
-
-	private float textIndent = 0; // ok
-
-	private float textMarginLeft = 0; // ok
-
-	/** Font **/
-
-	private float fontSize = 9; // ok
-
-	private boolean fontStyle = false; // ok
-
-	private boolean fontBold = false; // ok
-
-	public static void main(String[] args) {
-		TextStyleClass a = new TextStyleClass("text-align: center ; font-size:1.5; font-style:italic;  "
-				+ "color:#005000; text-decoration: underline; background-color: #FFFFFF; text-indent:10; indentation-left: 10");
-		System.out.println(a);
-	}
-	
-	public static Optional<TextStyleClass> of(String style) {
-		if (!Strings.isNullOrEmpty(style)) {
-			return Optional.of(new TextStyleClass(style));
-		}
-		return Optional.of(new TextStyleClass(""));
+	public static Optional<TextStyleClass> of(Style style) {
+		// if (!Strings.isNullOrEmpty(style)) {
+		return Optional.of(new TextStyleClass(style));
+		// }
+		// return Optional.of(new TextStyleClass(""));
 	}
 
-	protected TextStyleClass(String style) {
+	protected TextStyleClass() {
+		// TODO Auto-generated constructor stub
+	}
+
+	protected TextStyleClass(Style classe) {
+		super(classe);
 		try {
-			if (style.contains(":")) {
-				Map<String, String> map = Splitter.on(";").trimResults().omitEmptyStrings().withKeyValueSeparator(":").split(style);
-				setColor(map.get("color"));
-				setTextAlign(map.get("text-align"));
-				setTextDecoration(map.get("text-decoration"));
-				setTextIndent(map.get("text-indent"));
-				setTextMarginLeft(map.get("margin-left"));
-				setFontSize(map.get("font-size"));
-				setFontStyle(map.get("font-style"));
-				setFontWeight(map.get("font-weight"));
-			} else if (!style.isEmpty()) {
-				throw new Exception("formato css inválido, chave e valor separados por ':' e elementos separados por ';' ");
+			Map<String, String> map = StyleMap.getClassStyle(classe.getClasse());
+			setAtributtes(map);
+
+			if (classe.getInline().contains(":")) {
+				Map<String, String> mapInline = Splitter.on(";").trimResults().omitEmptyStrings().withKeyValueSeparator(":")
+						.split(classe.getInline());
+				setAtributtes(mapInline);
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
 
+	private void setAtributtes(Map<String, String> map) {
+		setColor(map.get("color"));
+		setTextAlign(map.get("text-align"));
+		setTextAlignNumber(map.get("text-align-number"));
+		setTextDecoration(map.get("text-decoration"));
+		setTextIndent(map.get("text-indent"));
+		setTextMarginLeft(map.get("margin-left"));
+		setFontSize(map.get("font-size"));
+		setFontStyle(map.get("font-style"));
+		setFontWeight(map.get("font-weight"));
+	}
+
 	@Override
 	public void setTextMarginLeft(String marginLeft) {
-		if (marginLeft != null) {
+		if (!Strings.isNullOrEmpty(marginLeft)) {
 			try {
 				this.textMarginLeft = Float.valueOf(marginLeft.trim());
 			} catch (NumberFormatException e) {
@@ -86,7 +85,7 @@ public class TextStyleClass implements NewTextStyle {
 
 	@Override
 	public void setTextIndent(String textIndent) {
-		if (textIndent != null) {
+		if (!Strings.isNullOrEmpty(textIndent)) {
 			try {
 				this.textIndent = Float.valueOf(textIndent.trim());
 			} catch (NumberFormatException e) {
@@ -97,41 +96,52 @@ public class TextStyleClass implements NewTextStyle {
 
 	@Override
 	public void setTextDecoration(String textDecoration) {
-		if (textDecoration != null) {
+		if (!Strings.isNullOrEmpty(textDecoration)) {
 			this.textDecoration = TextDecoration.valueOf(textDecoration.trim().toUpperCase());
 		}
 	}
 
 	@Override
 	public void setFontStyle(String fontStyle) {
-		if (fontStyle != null) {
-			fontStyle = fontStyle.trim().toUpperCase().equals("NORMAL") ? null : fontStyle;
-		}
-		if (fontStyle != null) {
-			this.fontStyle = true;
+		if (!Strings.isNullOrEmpty(fontStyle)) {
+			fontStyle = fontStyle.trim().toUpperCase().equals("NORMAL") ? "normal" : fontStyle;
+			if (fontStyle.equals("italic")) {
+				this.fontStyle = true;
+			} else {
+				this.fontStyle = false;
+			}
 		}
 	}
 
 	@Override
 	public void setFontWeight(String fontWeight) {
-		if (fontWeight != null) {
-			fontWeight = fontWeight.trim().toUpperCase().equals("NORMAL") ? null : fontWeight;
-		}
-		if (fontWeight != null) {
-			this.fontStyle = true;
+		if (!Strings.isNullOrEmpty(fontWeight)) {
+			fontWeight = fontWeight.trim().toUpperCase().equals("NORMAL") ? "normal" : fontWeight;
+			if (fontWeight.equals("bold")) {
+				this.fontBold = true;
+			} else {
+				this.fontBold = false;
+			}
 		}
 	}
 
 	@Override
 	public void setTextAlign(String textAlign) {
-		if (textAlign != null) {
+		if (!Strings.isNullOrEmpty(textAlign)) {
 			this.textAlign = TextAlignment.valueOf(textAlign.trim().toUpperCase());
 		}
 	}
 
 	@Override
+	public void setTextAlignNumber(String textAlign) {
+		if (!Strings.isNullOrEmpty(textAlign)) {
+			this.textAlignNumber = TextAlignment.valueOf(textAlign.trim().toUpperCase());
+		}
+	}
+
+	@Override
 	public void setFontSize(String fontSize) {
-		if (fontSize != null) {
+		if (!Strings.isNullOrEmpty(fontSize)) {
 			try {
 				this.fontSize = Float.valueOf(fontSize.trim());
 			} catch (NumberFormatException e) {
@@ -142,13 +152,13 @@ public class TextStyleClass implements NewTextStyle {
 
 	@Override
 	public void setColor(String fontColor) {
-		if (fontColor != null) {
+		if (!Strings.isNullOrEmpty(fontColor)) {
 			if (fontColor.trim().startsWith("#")) {
 				java.awt.Color parse = java.awt.Color.decode(fontColor.trim().toUpperCase());
 				this.color = new DeviceRgb(parse.getRed(), parse.getGreen(), parse.getBlue());
 			} else {
 				try {
-					Field field = Color.class.getField(fontColor.trim().toLowerCase());
+					Field field = java.awt.Color.class.getField(fontColor.trim().toLowerCase());
 					java.awt.Color parse = (java.awt.Color) field.get(null);
 					this.color = new DeviceRgb(parse.getRed(), parse.getGreen(), parse.getBlue());
 				} catch (NoSuchFieldException e) {
@@ -173,7 +183,6 @@ public class TextStyleClass implements NewTextStyle {
 		return "TextStyleClass [fontColor=" + color + ", textAlign=" + textAlign + ", textDecoration=" + textDecoration + ", indent="
 				+ textIndent + ", marginLeft=" + textMarginLeft + ", fontSize=" + fontSize + ", fontStyle=" + fontStyle + "]";
 	}
-
 
 	public Color getColor() {
 		return color;
@@ -205,6 +214,10 @@ public class TextStyleClass implements NewTextStyle {
 
 	public boolean isFontBold() {
 		return fontBold;
+	}
+
+	public TextAlignment getTextAlignNumber() {
+		return textAlignNumber;
 	}
 
 }

@@ -5,7 +5,8 @@ import java.util.Optional;
 import com.google.common.base.Strings;
 import com.itextpdf.layout.Document;
 
-import br.jreport.core.api.NewText;
+import br.jreport.core.api.interfaces.NewText;
+import br.jreport.core.impl.Style;
 import br.jreport.pdf.PdfReport;
 import br.jreport.pdf.helper.DocumentHelper;
 
@@ -18,7 +19,7 @@ public class PdfText implements NewText {
 
 	private String text;
 
-	private String style = null;
+	private Optional<Style> style = null;
 
 	private Document document;
 
@@ -32,7 +33,7 @@ public class PdfText implements NewText {
 		this.text = text;
 	}
 
-	private PdfText(Document document, String text, String style) {
+	private PdfText(Document document, String text, Optional<Style> style) {
 		super();
 		this.document = document;
 		this.text = text;
@@ -51,8 +52,8 @@ public class PdfText implements NewText {
 		return Optional.empty();
 	}
 
-	public static Optional<NewText> of(Document document, String text, String style) {
-		if (document != null && !Strings.isNullOrEmpty(text) && !Strings.isNullOrEmpty(style)) {
+	public static Optional<NewText> of(Document document, String text, Optional<Style> style) {
+		if (document != null && !Strings.isNullOrEmpty(text) && style.isPresent()) {
 			return Optional.of(new PdfText(document, text, style));
 		}
 		return Optional.empty();

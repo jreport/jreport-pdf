@@ -4,11 +4,11 @@ import java.util.Optional;
 import java.util.function.BiConsumer;
 
 import com.itextpdf.layout.Document;
-import com.itextpdf.layout.element.Table;
 
-import br.jreport.core.api.NewTable;
-import br.jreport.core.api.NewTableRow;
+import br.jreport.core.api.aux.NewTableRow;
+import br.jreport.core.api.interfaces.NewTable;
 import br.jreport.core.api.property.NewTableProperty;
+import br.jreport.core.impl.Style;
 import br.jreport.pdf.PdfReport;
 import br.jreport.pdf.helper.DocumentHelper;
 
@@ -21,9 +21,7 @@ public class PdfTable<T> implements NewTable<T> {
 
 	private Document document;
 
-	private String classe = null;
-
-	private String headerClasse = null;
+	private Optional<Style> classe = null;
 
 	private NewTableProperty<T> tableAdapter;
 
@@ -38,12 +36,11 @@ public class PdfTable<T> implements NewTable<T> {
 		this.tableAdapter = tableAdapter;
 	}
 
-	private PdfTable(Document document, NewTableProperty<T> tableAdapter, String classe, String headerClasse) {
+	private PdfTable(Document document, NewTableProperty<T> tableAdapter, Optional<Style> classe) {
 		super();
 		this.document = document;
 		this.tableAdapter = tableAdapter;
 		this.classe = classe;
-		this.headerClasse = headerClasse;
 	}
 
 	/*
@@ -54,8 +51,7 @@ public class PdfTable<T> implements NewTable<T> {
 	 */
 	@Override
 	public void build() {
-		Table table = DocumentHelper.createTable(tableAdapter, classe, headerClasse);
-		PdfReport.addToDocument(document, table);
+		PdfReport.addToDocument(document, DocumentHelper.createTable(tableAdapter, classe));
 	}
 
 	/*
@@ -67,8 +63,7 @@ public class PdfTable<T> implements NewTable<T> {
 	 */
 	@Override
 	public void build(BiConsumer<T, NewTableRow> eachRow) {
-		Table table = DocumentHelper.createTable(tableAdapter, eachRow, classe, headerClasse);
-		PdfReport.addToDocument(document, table);
+		PdfReport.addToDocument(document, DocumentHelper.createTable(tableAdapter, eachRow, classe));
 	}
 
 	public static <T> Optional<NewTable<T>> of(Document document, NewTableProperty<T> tableAdapter) {
@@ -78,9 +73,9 @@ public class PdfTable<T> implements NewTable<T> {
 		return Optional.empty();
 	}
 
-	public static <T> Optional<NewTable<T>> of(Document document, NewTableProperty<T> tableAdapter, String classe, String headerClasse) {
-		if (document != null && tableAdapter != null) {
-			return Optional.of(new PdfTable<T>(document, tableAdapter, classe, headerClasse));
+	public static <T> Optional<NewTable<T>> of(Document document, NewTableProperty<T> tableAdapter, Optional<Style> style) {
+		if (document != null && tableAdapter != null && style.isPresent()) {
+			return Optional.of(new PdfTable<T>(document, tableAdapter, style));
 		}
 		return Optional.empty();
 	}

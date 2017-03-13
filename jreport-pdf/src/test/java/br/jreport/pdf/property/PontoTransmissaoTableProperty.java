@@ -3,12 +3,12 @@ package br.jreport.pdf.property;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 import br.jreport.core.api.NewTableColumn;
 import br.jreport.core.api.NewTableHeader;
 import br.jreport.core.api.datasource.NewDatasource;
 import br.jreport.core.api.property.NewTableProperty;
+import br.jreport.core.enumerations.HeaderType;
 import br.jreport.pdf.datasource.PontoTransmissaoDS;
 import br.jreport.pdf.model.PontoTransmissao;
 
@@ -21,7 +21,8 @@ public class PontoTransmissaoTableProperty implements NewTableProperty<PontoTran
 
 	private PontoTransmissaoDS pontoTransmissaoDS = new PontoTransmissaoDS();
 
-	private List<String> headers = Arrays.asList("Id", "Nome", "aa");
+	private List<NewTableHeader> headers = Arrays.asList(NewTableHeader.of("Zona", HeaderType.TEXT).get(),
+			NewTableHeader.of("Quantidade de Pontos", HeaderType.NUMBER).get());
 
 	@Override
 	public Optional<NewTableColumn> getColumn(PontoTransmissao item, int columnIndex) {
@@ -37,11 +38,7 @@ public class PontoTransmissaoTableProperty implements NewTableProperty<PontoTran
 	@Override
 	public List<NewTableHeader> getHeaders() {
 		//@formatter:off
-		return headers.stream()
-				.map(NewTableHeader::of)
-				.filter(op -> op.isPresent())
-				.map(th -> th.get())
-				.collect(Collectors.toList());
+		return headers;
 		//@formatter:on
 	}
 

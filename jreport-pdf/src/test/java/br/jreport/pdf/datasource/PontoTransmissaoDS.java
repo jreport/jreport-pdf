@@ -1,6 +1,7 @@
 package br.jreport.pdf.datasource;
 
-import java.util.Arrays;
+import java.text.DecimalFormat;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -13,10 +14,15 @@ public class PontoTransmissaoDS implements NewDatasource<PontoTransmissao> {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
+	DecimalFormat df = new DecimalFormat("#.00");
 
 	@Override
 	public List<PontoTransmissao> getList() {
-		return Arrays.asList(new PontoTransmissao("1", "A"), new PontoTransmissao("2", "B"), new PontoTransmissao("3", "C"));
+		List<PontoTransmissao> retorno = new ArrayList<>();
+		for (int i = 0; i < 20; i++) {
+			retorno.add(new PontoTransmissao(i + "ª Zona Eleitoral", df.format((Math.random() * i + 10))));
+		}
+		return retorno;
 	}
 
 	@Override

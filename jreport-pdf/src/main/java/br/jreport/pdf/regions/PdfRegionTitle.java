@@ -1,16 +1,17 @@
 package br.jreport.pdf.regions;
 
-
+import java.util.Optional;
 import java.util.function.BiConsumer;
 
 import com.itextpdf.layout.Document;
 
-import br.jreport.core.api.NewColspanBody;
 import br.jreport.core.api.NewReport;
-import br.jreport.core.api.NewTableRow;
-import br.jreport.core.api.NewTitle;
+import br.jreport.core.api.aux.NewTableRow;
 import br.jreport.core.api.datasource.NewDatasource;
+import br.jreport.core.api.interfaces.NewColspanBody;
 import br.jreport.core.api.property.NewTableProperty;
+import br.jreport.core.api.regions.NewTitle;
+import br.jreport.core.impl.Style;
 import br.jreport.pdf.implementations.PdfColspanBody;
 import br.jreport.pdf.implementations.PdfColspanLine;
 import br.jreport.pdf.implementations.PdfImage;
@@ -43,8 +44,14 @@ public class PdfRegionTitle implements NewTitle {
 	}
 
 	@Override
-	public NewTitle addText(String text, String styleClass) {
+	public NewTitle addText(String text, Optional<Style> styleClass) {
 		PdfText.of(document, text, styleClass).ifPresent(txt -> txt.build());
+		return this;
+	}
+
+	@Override
+	public NewTitle addBrasao() {
+		PdfImage.of(document, "brasao-republica.png", Style.of("image.brasao")).ifPresent(newImage -> newImage.build());
 		return this;
 	}
 
@@ -55,7 +62,7 @@ public class PdfRegionTitle implements NewTitle {
 	}
 
 	@Override
-	public NewTitle addImage(String src, String classe) {
+	public NewTitle addImage(String src, Optional<Style> classe) {
 		PdfImage.of(document, src, classe).ifPresent(newImage -> newImage.build());
 		return this;
 	}
@@ -77,11 +84,13 @@ public class PdfRegionTitle implements NewTitle {
 		PdfNewPage.of(document).ifPresent(newPage -> newPage.build());
 		return this;
 	}
-	
+
 	@Override
-	//TODO não gostei muito dessa sintaxe podemos verificar melhor maneira de passar o document.
+	// TODO não gostei muito dessa sintaxe podemos verificar melhor maneira de
+	// passar o document.
 	public NewTitle addColspanline(NewColspanBody tableProperty) {
-		PdfColspanLine.of(document, (PdfColspanBody)tableProperty).ifPresent(table -> table.build());;
+		PdfColspanLine.of(document, (PdfColspanBody) tableProperty).ifPresent(table -> table.build());
+		;
 		return this;
 	}
 
@@ -90,7 +99,6 @@ public class PdfRegionTitle implements NewTitle {
 		return this.report;
 	}
 
-	
 	@Override
 	public <T, A extends NewTableProperty<T>> NewTitle addTable(A tableProperty) {
 		// TODO Auto-generated method stub
@@ -98,7 +106,7 @@ public class PdfRegionTitle implements NewTitle {
 	}
 
 	@Override
-	public <T, A extends NewTableProperty<T>> NewTitle addTable(A tableProperty, String classe) {
+	public <T, A extends NewTableProperty<T>> NewTitle addTable(A tableProperty, Optional<Style> classe) {
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -110,7 +118,8 @@ public class PdfRegionTitle implements NewTitle {
 	}
 
 	@Override
-	public <T, A extends NewTableProperty<T>> NewTitle addTable(A tableProperty, BiConsumer<T, NewTableRow> eachRow, String classe) {
+	public <T, A extends NewTableProperty<T>> NewTitle addTable(A tableProperty, BiConsumer<T, NewTableRow> eachRow,
+			Optional<Style> classe) {
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -122,7 +131,7 @@ public class PdfRegionTitle implements NewTitle {
 	}
 
 	@Override
-	public <T, D extends NewDatasource<T>> NewTitle addList(D datasource, String classe) {
+	public <T, D extends NewDatasource<T>> NewTitle addList(D datasource, Optional<Style> classe) {
 		// TODO Auto-generated method stub
 		return null;
 	}

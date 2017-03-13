@@ -2,7 +2,7 @@ package br.jreport.pdf.aux;
 
 import java.io.ByteArrayOutputStream;
 
-import br.jreport.core.api.NewReportOutputData;
+import br.jreport.core.api.aux.NewReportOutputData;
 
 public class PdfReportOutputData implements NewReportOutputData {
 

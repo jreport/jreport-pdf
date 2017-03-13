@@ -10,11 +10,11 @@ import com.itextpdf.layout.element.AreaBreak;
 import com.itextpdf.layout.element.BlockElement;
 import com.itextpdf.layout.element.Image;
 
-import br.jreport.core.api.NewDetail;
-import br.jreport.core.api.NewFooter;
 import br.jreport.core.api.NewReport;
-import br.jreport.core.api.NewReportOutputData;
-import br.jreport.core.api.NewTitle;
+import br.jreport.core.api.aux.NewReportOutputData;
+import br.jreport.core.api.regions.NewDetail;
+import br.jreport.core.api.regions.NewFooter;
+import br.jreport.core.api.regions.NewTitle;
 import br.jreport.pdf.aux.PdfReportOutputData;
 import br.jreport.pdf.regions.PdfRegionDetail;
 import br.jreport.pdf.regions.PdfRegionTitle;

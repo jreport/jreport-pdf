@@ -1,15 +1,17 @@
 package br.jreport.pdf.regions;
 
+import java.util.Optional;
 import java.util.function.BiConsumer;
 
 import com.itextpdf.layout.Document;
 
-import br.jreport.core.api.NewColspanBody;
-import br.jreport.core.api.NewDetail;
 import br.jreport.core.api.NewReport;
-import br.jreport.core.api.NewTableRow;
+import br.jreport.core.api.aux.NewTableRow;
 import br.jreport.core.api.datasource.NewDatasource;
+import br.jreport.core.api.interfaces.NewColspanBody;
 import br.jreport.core.api.property.NewTableProperty;
+import br.jreport.core.api.regions.NewDetail;
+import br.jreport.core.impl.Style;
 import br.jreport.pdf.implementations.PdfColspanBody;
 import br.jreport.pdf.implementations.PdfColspanLine;
 import br.jreport.pdf.implementations.PdfImage;
@@ -43,7 +45,7 @@ public class PdfRegionDetail implements NewDetail {
 	}
 
 	@Override
-	public NewDetail addImage(String src, String classe) {
+	public NewDetail addImage(String src, Optional<Style> classe) {
 		PdfImage.of(document, src, classe).ifPresent(image -> image.build());
 		return this;
 	}
@@ -60,9 +62,9 @@ public class PdfRegionDetail implements NewDetail {
 	}
 
 	@Override
-	public NewDetail addText(String text, String classe) {
-		// TODO Auto-generated method stub
-		return null;
+	public NewDetail addText(String text, Optional<Style> classe) {
+		PdfText.of(document, text, classe).ifPresent(txt -> txt.build());
+		return this;
 	}
 
 	/*
@@ -121,7 +123,7 @@ public class PdfRegionDetail implements NewDetail {
 	 */
 	@Override
 	public <T, D extends NewDatasource<T>> NewDetail addList(D datasource) {
-		return this;
+		return null;
 	}
 
 	@Override
@@ -129,7 +131,6 @@ public class PdfRegionDetail implements NewDetail {
 	// passar o document.
 	public NewDetail addColspanline(NewColspanBody tableProperty) {
 		PdfColspanLine.of(document, (PdfColspanBody) tableProperty).ifPresent(table -> table.build());
-		;
 		return this;
 	}
 
@@ -143,20 +144,21 @@ public class PdfRegionDetail implements NewDetail {
 		return this.report;
 	}
 
-	public <T, A extends NewTableProperty<T>> NewDetail addTable(A tableProperty, String classe) {
-		// TODO Auto-generated method stub
-		return null;
+	@Override
+	public <T, A extends NewTableProperty<T>> NewDetail addTable(A tableProperty, Optional<Style> classe) {
+		PdfTable.of(document, tableProperty, classe).ifPresent(table -> table.build());
+		return this;
 	}
 
 	@Override
-	public <T, A extends NewTableProperty<T>> NewDetail addTable(A tableProperty, BiConsumer<T, NewTableRow> eachRow, String classe) {
-		// TODO Auto-generated method stub
-		return null;
+	public <T, A extends NewTableProperty<T>> NewDetail addTable(A tableProperty, BiConsumer<T, NewTableRow> eachRow,
+			Optional<Style> classe) {
+		PdfTable.of(document, tableProperty, classe).ifPresent(table -> table.build(eachRow));
+		return this;
 	}
 
 	@Override
-	public <T, D extends NewDatasource<T>> NewDetail addList(D datasource, String classe) {
-		// TODO Auto-generated method stub
+	public <T, D extends NewDatasource<T>> NewDetail addList(D datasource, Optional<Style> classe) {
 		return null;
 	}
 

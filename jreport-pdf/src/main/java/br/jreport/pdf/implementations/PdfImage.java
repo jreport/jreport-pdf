@@ -5,7 +5,8 @@ import java.util.Optional;
 import com.google.common.base.Strings;
 import com.itextpdf.layout.Document;
 
-import br.jreport.core.api.NewImage;
+import br.jreport.core.api.interfaces.NewImage;
+import br.jreport.core.impl.Style;
 import br.jreport.pdf.PdfReport;
 import br.jreport.pdf.helper.DocumentHelper;
 
@@ -18,7 +19,7 @@ public class PdfImage implements NewImage {
 
 	private String src;
 
-	private String style = null;
+	private Optional<Style> style = null;
 
 	private Document document;
 
@@ -32,10 +33,11 @@ public class PdfImage implements NewImage {
 		this.src = src;
 	}
 
-	private PdfImage(Document document, String src, String style) {
+	private PdfImage(Document document, String src, Optional<Style> classe) {
 		super();
 		this.document = document;
 		this.src = src;
+		this.style = classe;
 	}
 
 	@Override
@@ -50,8 +52,8 @@ public class PdfImage implements NewImage {
 		return Optional.empty();
 	}
 
-	public static Optional<PdfImage> of(Document document, String src, String classe) {
-		if (document != null && !Strings.isNullOrEmpty(src) && !Strings.isNullOrEmpty(classe)) {
+	public static Optional<PdfImage> of(Document document, String src, Optional<Style> classe) {
+		if (document != null && !Strings.isNullOrEmpty(src) && classe.isPresent()) {
 			return Optional.of(new PdfImage(document, src, classe));
 		}
 		return Optional.empty();

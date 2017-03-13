@@ -4,7 +4,7 @@ import java.util.Optional;
 
 import com.itextpdf.layout.Document;
 
-import br.jreport.core.api.NewPage;
+import br.jreport.core.api.interfaces.NewPage;
 import br.jreport.pdf.PdfReport;
 import br.jreport.pdf.helper.DocumentHelper;
 
